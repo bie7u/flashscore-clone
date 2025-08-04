@@ -1,0 +1,28 @@
+{
+  "name": "flashscore-clone",
+  "version": "1.0.0",
+  "description": "A modern Flashscore clone application built with React and Node.js",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm run install:frontend && npm run install:backend",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && npm install",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "seed": "cd backend && npm run seed",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start": "npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "author": "",
+  "license": "MIT"
+}

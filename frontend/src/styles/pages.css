@@ -1,0 +1,36 @@
+/* Page styles */
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem 1rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  font-size: 1.1rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Responsive page header */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .page-header p {
+    font-size: 1rem;
+  }
+}
