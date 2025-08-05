@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { League, Season, Match, Round, Standing } from '../utils/types';
-import LeagueSelector from '../components/league/LeagueSelector';
 import SeasonSelector from '../components/league/SeasonSelector';
 import RoundSelector from '../components/league/RoundSelector';
 import StandingsTable from '../components/league/StandingsTable';
@@ -125,15 +124,43 @@ const LeagueOverview: React.FC = () => {
 
       {/* League Selector */}
       <div className="mb-6">
-        <LeagueSelector
-          leagues={leagues}
-          selectedLeague={selectedLeague}
-          onLeagueSelect={(leagueId) => {
-            setSelectedLeague(leagueId);
-            setSelectedSeason(''); // Reset season when league changes
-            setSelectedRound(''); // Reset round when league changes
-          }}
-        />
+        <div className="flex flex-wrap gap-2 p-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+          <button
+            onClick={() => {
+              setSelectedLeague('');
+              setSelectedSeason('');
+              setSelectedRound('');
+            }}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              !selectedLeague
+                ? 'bg-primary-600 text-white'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+            }`}
+          >
+            All Leagues
+          </button>
+          
+          {leagues.map((league) => (
+            <button
+              key={league.id}
+              onClick={() => {
+                setSelectedLeague(league.id);
+                setSelectedSeason('');
+                setSelectedRound('');
+              }}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                selectedLeague === league.id
+                  ? 'bg-primary-600 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              <span>{league.name}</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {league.country}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Season Selector */}

@@ -21,7 +21,6 @@ function App() {
               <Route path="/match/:matchId" element={<MatchDetailsPage />} />
               <Route path="/leagues" element={<LeagueOverview />} />
               <Route path="/fixtures" element={<Home />} />
-              <Route path="/standings" element={<LeagueOverview />} />
             </Routes>
           </main>
         </div>
