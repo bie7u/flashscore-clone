@@ -20,7 +20,6 @@ function App() {
               <Route path="/live" element={<Live />} />
               <Route path="/match/:matchId" element={<MatchDetailsPage />} />
               <Route path="/leagues" element={<LeagueOverview />} />
-              <Route path="/fixtures" element={<Home />} />
             </Routes>
           </main>
         </div>

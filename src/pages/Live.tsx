@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Match, League } from '../utils/types';
-import { filterMatchesByLeague } from '../utils/matchUtils';
 import MatchList from '../components/match/MatchList';
 import LeagueSelector from '../components/league/LeagueSelector';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -19,14 +18,17 @@ const Live: React.FC = () => {
       try {
         setLoading(true);
         
-        // Load live matches and leagues in parallel
-        const [matchesResponse, leaguesResponse] = await Promise.all([
-          apiService.getMatches({ status: 'LIVE' }),
-          apiService.getLeagues()
+        // Load leagues first, then live matches filtered by selected league
+        const [leaguesResponse, matchesResponse] = await Promise.all([
+          apiService.getLeagues(),
+          apiService.getMatches({ 
+            status: 'LIVE',
+            ...(selectedLeague && { leagueId: selectedLeague })
+          })
         ]);
 
-        setMatches(matchesResponse.matches);
         setLeagues(leaguesResponse.leagues);
+        setMatches(matchesResponse.matches);
       } catch (error) {
         console.error('Error loading live data:', error);
         // Fallback to empty arrays on error
@@ -38,12 +40,27 @@ const Live: React.FC = () => {
     };
 
     loadData();
-  }, []);
+  }, [selectedLeague]); // Reload when selectedLeague changes
 
-  // Filter for live matches only (they're already filtered by the API call, but filter by league)
-  const liveMatches = React.useMemo(() => {
-    return filterMatchesByLeague(matches, selectedLeague);
-  }, [matches, selectedLeague]);
+  // Auto-refresh live matches every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const matchesResponse = await apiService.getMatches({ 
+          status: 'LIVE',
+          ...(selectedLeague && { leagueId: selectedLeague })
+        });
+        setMatches(matchesResponse.matches);
+      } catch (error) {
+        console.error('Error refreshing live matches:', error);
+      }
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, [selectedLeague]);
+
+  // Live matches are already filtered by the server, no need for client-side filtering
+  const liveMatches = matches;
 
   const handleMatchClick = (match: Match) => {
     navigate(`/match/${match.id}`);

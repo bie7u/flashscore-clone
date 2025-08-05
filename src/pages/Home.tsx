@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Match, League } from '../utils/types';
-import { filterMatchesByDate, filterMatchesByLeague } from '../utils/matchUtils';
 import MatchList from '../components/match/MatchList';
 import LeagueSelector from '../components/league/LeagueSelector';
 import DatePicker from '../components/common/DatePicker';
@@ -21,9 +20,15 @@ const Home: React.FC = () => {
       try {
         setLoading(true);
         
-        // Load matches and leagues in parallel
+        // Format the date for API query
+        const dateStr = selectedDate.toISOString().split('T')[0];
+        
+        // Load matches and leagues with server-side filtering
         const [matchesResponse, leaguesResponse] = await Promise.all([
-          apiService.getMatches(),
+          apiService.getMatches({ 
+            date: dateStr,
+            ...(selectedLeague && { leagueId: selectedLeague })
+          }),
           apiService.getLeagues()
         ]);
 
@@ -40,22 +45,10 @@ const Home: React.FC = () => {
     };
 
     loadData();
-  }, []);
+  }, [selectedDate, selectedLeague]); // Reload when date or league changes
 
-  // Filter matches based on selected date and league
-  const filteredMatches = React.useMemo(() => {
-    let filtered = matches;
-    
-    // Filter by date
-    filtered = filterMatchesByDate(filtered, selectedDate);
-    
-    // Filter by league
-    if (selectedLeague) {
-      filtered = filterMatchesByLeague(filtered, selectedLeague);
-    }
-    
-    return filtered;
-  }, [matches, selectedDate, selectedLeague]);
+  // Matches are already filtered by the server, no need for client-side filtering
+  const filteredMatches = matches;
 
   const handleMatchClick = (match: Match) => {
     navigate(`/match/${match.id}`);

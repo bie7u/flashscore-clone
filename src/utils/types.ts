@@ -22,6 +22,7 @@ export interface Round {
   name: string;
   startDate: string;
   endDate: string;
+  matches?: Match[]; // Optional field for when API returns matches with rounds
 }
 
 export interface StandingEntry {

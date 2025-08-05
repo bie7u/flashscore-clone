@@ -42,10 +42,20 @@ app.get('/api/health', (req, res) => {
 
 // Get all leagues
 app.get('/api/leagues', (req, res) => {
+  const { league_name } = req.query;
+  
   if (!leagues) {
     return res.status(500).json({ error: 'Failed to load leagues data' });
   }
-  res.json(leagues);
+  
+  if (league_name) {
+    const filteredLeagues = leagues.leagues.filter(league => 
+      league.name.toLowerCase().replace(/\s+/g, '_') === league_name.toLowerCase()
+    );
+    res.json({ leagues: filteredLeagues });
+  } else {
+    res.json(leagues);
+  }
 });
 
 // Get teams
@@ -149,8 +159,8 @@ app.get('/api/standings', (req, res) => {
 app.get('/api/rounds', (req, res) => {
   const { leagueId, season } = req.query;
   
-  if (!rounds) {
-    return res.status(500).json({ error: 'Failed to load rounds data' });
+  if (!rounds || !matches) {
+    return res.status(500).json({ error: 'Failed to load rounds or matches data' });
   }
   
   let filteredRounds = rounds.rounds;
@@ -163,7 +173,20 @@ app.get('/api/rounds', (req, res) => {
     filteredRounds = filteredRounds.filter(round => round.season === season);
   }
   
-  res.json({ rounds: filteredRounds });
+  // Add matches to each round
+  const roundsWithMatches = filteredRounds.map(round => {
+    const roundMatches = matches.matches.filter(match => 
+      match.round === round.round && 
+      match.leagueId === round.leagueId &&
+      (!season || match.season === season)
+    );
+    return {
+      ...round,
+      matches: roundMatches
+    };
+  });
+  
+  res.json({ rounds: roundsWithMatches });
 });
 
 // Get seasons

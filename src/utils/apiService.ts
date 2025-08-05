@@ -21,8 +21,9 @@ class ApiService {
   }
 
   // Leagues
-  async getLeagues(): Promise<{ leagues: League[] }> {
-    return this.fetchData<{ leagues: League[] }>('/leagues');
+  async getLeagues(league_name?: string): Promise<{ leagues: League[] }> {
+    const params = league_name ? `?league_name=${league_name}` : '';
+    return this.fetchData<{ leagues: League[] }>(`/leagues${params}`);
   }
 
   // Teams

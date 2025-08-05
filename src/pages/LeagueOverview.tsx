@@ -13,7 +13,6 @@ const LeagueOverview: React.FC = () => {
   const navigate = useNavigate();
   const [leagues, setLeagues] = useState<League[]>([]);
   const [seasons, setSeasons] = useState<Season[]>([]);
-  const [matches, setMatches] = useState<Match[]>([]);
   const [rounds, setRounds] = useState<Round[]>([]);
   const [standings, setStandings] = useState<Standing[]>([]);
   const [selectedLeague, setSelectedLeague] = useState<string>('');
@@ -23,45 +22,80 @@ const LeagueOverview: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadInitialData = async () => {
       try {
         setLoading(true);
         
-        // Load all data in parallel
-        const [leaguesResponse, seasonsResponse, matchesResponse, roundsResponse, standingsResponse] = await Promise.all([
-          apiService.getLeagues(),
-          apiService.getSeasons(),
-          apiService.getMatches(),
-          apiService.getRounds(),
-          apiService.getStandings()
-        ]);
-
+        // Load only leagues initially
+        const leaguesResponse = await apiService.getLeagues();
         setLeagues(leaguesResponse.leagues);
-        setSeasons(seasonsResponse.seasons);
-        setMatches(matchesResponse.matches);
-        setRounds(roundsResponse.rounds);
-        setStandings(standingsResponse.standings);
       } catch (error) {
-        console.error('Error loading league overview data:', error);
-        // Fallback to empty arrays on error
+        console.error('Error loading initial data:', error);
         setLeagues([]);
-        setSeasons([]);
-        setMatches([]);
-        setRounds([]);
-        setStandings([]);
       } finally {
         setLoading(false);
       }
     };
 
-    loadData();
+    loadInitialData();
   }, []);
+
+  // Load league-specific data when league is selected
+  useEffect(() => {
+    if (!selectedLeague) {
+      setSeasons([]);
+      setRounds([]);
+      setStandings([]);
+      return;
+    }
+
+    const loadLeagueData = async () => {
+      try {
+        const [seasonsResponse, standingsResponse] = await Promise.all([
+          apiService.getSeasons(selectedLeague),
+          apiService.getStandings(selectedLeague)
+        ]);
+
+        setSeasons(seasonsResponse.seasons);
+        setStandings(standingsResponse.standings);
+      } catch (error) {
+        console.error('Error loading league data:', error);
+        setSeasons([]);
+        setStandings([]);
+      }
+    };
+
+    loadLeagueData();
+  }, [selectedLeague]);
+
+  // Load season-specific data when season is selected
+  useEffect(() => {
+    if (!selectedLeague || !selectedSeason) {
+      setRounds([]);
+      return;
+    }
+
+    const loadSeasonData = async () => {
+      try {
+        const seasonData = seasons.find(s => s.id === selectedSeason);
+        if (!seasonData) return;
+
+        const roundsResponse = await apiService.getRounds(selectedLeague, seasonData.year);
+        setRounds(roundsResponse.rounds);
+      } catch (error) {
+        console.error('Error loading season data:', error);
+        setRounds([]);
+      }
+    };
+
+    loadSeasonData();
+  }, [selectedLeague, selectedSeason, seasons]);
 
   // Auto-select the current season (2025) when a league is selected
   useEffect(() => {
     if (selectedLeague && seasons.length > 0) {
       const currentSeasons = seasons.filter(season => 
-        season.leagueId === selectedLeague && season.year === '2025'
+        season.year === '2025'
       );
       if (currentSeasons.length > 0 && !selectedSeason) {
         setSelectedSeason(currentSeasons[0].id);
@@ -72,48 +106,30 @@ const LeagueOverview: React.FC = () => {
   // Auto-select first round when season is selected
   useEffect(() => {
     if (selectedSeason && rounds.length > 0) {
-      const seasonRounds = rounds.filter(round => round.seasonId === selectedSeason);
-      if (seasonRounds.length > 0 && !selectedRound) {
-        setSelectedRound(seasonRounds[0].id);
+      if (rounds.length > 0 && !selectedRound) {
+        setSelectedRound(rounds[0].id);
       }
     }
   }, [selectedSeason, rounds, selectedRound]);
 
-  // Filter seasons based on selected league
-  const filteredSeasons = React.useMemo(() => {
-    if (!selectedLeague) return [];
-    return seasons.filter(season => season.leagueId === selectedLeague);
-  }, [seasons, selectedLeague]);
+  // Filter seasons based on selected league (now all seasons are for selected league)
+  const filteredSeasons = seasons;
 
-  // Filter rounds based on selected season
-  const filteredRounds = React.useMemo(() => {
-    if (!selectedSeason) return [];
-    return rounds.filter(round => round.seasonId === selectedSeason);
-  }, [rounds, selectedSeason]);
+  // Filter rounds based on selected season (now all rounds are for selected season)
+  const filteredRounds = rounds;
 
-  // Filter matches based on selected round
+  // Get matches from selected round (rounds now include matches from API)
   const roundMatches = React.useMemo(() => {
     if (!selectedRound) return [];
     const round = rounds.find(r => r.id === selectedRound);
-    if (!round) return [];
-    
-    return matches.filter(match => {
-      const matchDate = new Date(match.date);
-      const roundStart = new Date(round.startDate);
-      const roundEnd = new Date(round.endDate);
-      return matchDate >= roundStart && matchDate <= roundEnd && 
-             match.leagueId === selectedLeague && 
-             match.seasonId === selectedSeason;
-    });
-  }, [matches, selectedRound, rounds, selectedLeague, selectedSeason]);
+    return round?.matches || [];
+  }, [rounds, selectedRound]);
 
-  // Get standings for selected league and season
+  // Get standings for selected league and season (now filtered by server)
   const currentStanding = React.useMemo(() => {
     if (!selectedLeague || !selectedSeason) return null;
-    return standings.find(standing => 
-      standing.leagueId === selectedLeague && standing.seasonId === selectedSeason
-    );
-  }, [standings, selectedLeague, selectedSeason]);
+    return standings.find(standing => standing.seasonId === selectedSeason);
+  }, [standings, selectedSeason]);
 
   const selectedLeagueData = leagues.find(league => league.id === selectedLeague);
 
