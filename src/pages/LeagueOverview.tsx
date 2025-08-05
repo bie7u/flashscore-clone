@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import type { League, Season, Match } from '../utils/types';
-import { filterMatchesByLeague } from '../utils/matchUtils';
+import { useNavigate } from 'react-router-dom';
+import type { League, Season, Match, Round, Standing } from '../utils/types';
 import LeagueSelector from '../components/league/LeagueSelector';
 import SeasonSelector from '../components/league/SeasonSelector';
-import MatchList from '../components/match/MatchList';
+import RoundSelector from '../components/league/RoundSelector';
+import StandingsTable from '../components/league/StandingsTable';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 // Import mock data
 import leaguesData from '../mock-data/leagues.json';
 import seasonsData from '../mock-data/seasons.json';
 import matchesData from '../mock-data/matches.json';
+import roundsData from '../mock-data/rounds.json';
+import standingsData from '../mock-data/standings.json';
+
+type TabType = 'fixtures' | 'standings';
 
 const LeagueOverview: React.FC = () => {
+  const navigate = useNavigate();
   const [leagues, setLeagues] = useState<League[]>([]);
   const [seasons, setSeasons] = useState<Season[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
+  const [rounds, setRounds] = useState<Round[]>([]);
+  const [standings, setStandings] = useState<Standing[]>([]);
   const [selectedLeague, setSelectedLeague] = useState<string>('');
   const [selectedSeason, setSelectedSeason] = useState<string>('');
+  const [selectedRound, setSelectedRound] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<TabType>('fixtures');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,9 +35,33 @@ const LeagueOverview: React.FC = () => {
       setLeagues(leaguesData.leagues);
       setSeasons(seasonsData.seasons);
       setMatches(matchesData.matches as Match[]);
+      setRounds(roundsData.rounds);
+      setStandings(standingsData.standings);
       setLoading(false);
     }, 800);
   }, []);
+
+  // Auto-select the current season (2025) when a league is selected
+  useEffect(() => {
+    if (selectedLeague && seasons.length > 0) {
+      const currentSeasons = seasons.filter(season => 
+        season.leagueId === selectedLeague && season.year === '2025'
+      );
+      if (currentSeasons.length > 0 && !selectedSeason) {
+        setSelectedSeason(currentSeasons[0].id);
+      }
+    }
+  }, [selectedLeague, seasons, selectedSeason]);
+
+  // Auto-select first round when season is selected
+  useEffect(() => {
+    if (selectedSeason && rounds.length > 0) {
+      const seasonRounds = rounds.filter(round => round.seasonId === selectedSeason);
+      if (seasonRounds.length > 0 && !selectedRound) {
+        setSelectedRound(seasonRounds[0].id);
+      }
+    }
+  }, [selectedSeason, rounds, selectedRound]);
 
   // Filter seasons based on selected league
   const filteredSeasons = React.useMemo(() => {
@@ -35,22 +69,41 @@ const LeagueOverview: React.FC = () => {
     return seasons.filter(season => season.leagueId === selectedLeague);
   }, [seasons, selectedLeague]);
 
-  // Filter matches based on selected league and season
-  const filteredMatches = React.useMemo(() => {
-    let filtered = matches;
+  // Filter rounds based on selected season
+  const filteredRounds = React.useMemo(() => {
+    if (!selectedSeason) return [];
+    return rounds.filter(round => round.seasonId === selectedSeason);
+  }, [rounds, selectedSeason]);
+
+  // Filter matches based on selected round
+  const roundMatches = React.useMemo(() => {
+    if (!selectedRound) return [];
+    const round = rounds.find(r => r.id === selectedRound);
+    if (!round) return [];
     
-    if (selectedLeague) {
-      filtered = filterMatchesByLeague(filtered, selectedLeague);
-    }
-    
-    if (selectedSeason) {
-      filtered = filtered.filter(match => match.seasonId === selectedSeason);
-    }
-    
-    return filtered;
-  }, [matches, selectedLeague, selectedSeason]);
+    return matches.filter(match => {
+      const matchDate = new Date(match.date);
+      const roundStart = new Date(round.startDate);
+      const roundEnd = new Date(round.endDate);
+      return matchDate >= roundStart && matchDate <= roundEnd && 
+             match.leagueId === selectedLeague && 
+             match.seasonId === selectedSeason;
+    });
+  }, [matches, selectedRound, rounds, selectedLeague, selectedSeason]);
+
+  // Get standings for selected league and season
+  const currentStanding = React.useMemo(() => {
+    if (!selectedLeague || !selectedSeason) return null;
+    return standings.find(standing => 
+      standing.leagueId === selectedLeague && standing.seasonId === selectedSeason
+    );
+  }, [standings, selectedLeague, selectedSeason]);
 
   const selectedLeagueData = leagues.find(league => league.id === selectedLeague);
+
+  const handleMatchClick = (match: Match) => {
+    navigate(`/match/${match.id}`);
+  };
 
   if (loading) {
     return <LoadingSpinner />;
@@ -71,40 +124,90 @@ const LeagueOverview: React.FC = () => {
       </div>
 
       {/* League Selector */}
-      <LeagueSelector
-        leagues={leagues}
-        selectedLeague={selectedLeague}
-        onLeagueSelect={(leagueId) => {
-          setSelectedLeague(leagueId);
-          setSelectedSeason(''); // Reset season when league changes
-        }}
-      />
+      <div className="mb-6">
+        <LeagueSelector
+          leagues={leagues}
+          selectedLeague={selectedLeague}
+          onLeagueSelect={(leagueId) => {
+            setSelectedLeague(leagueId);
+            setSelectedSeason(''); // Reset season when league changes
+            setSelectedRound(''); // Reset round when league changes
+          }}
+        />
+      </div>
 
       {/* Season Selector */}
       {selectedLeague && (
-        <SeasonSelector
-          seasons={filteredSeasons}
-          selectedSeason={selectedSeason}
-          onSeasonSelect={setSelectedSeason}
-        />
+        <div className="mb-6">
+          <SeasonSelector
+            seasons={filteredSeasons}
+            selectedSeason={selectedSeason}
+            onSeasonSelect={(seasonId) => {
+              setSelectedSeason(seasonId);
+              setSelectedRound(''); // Reset round when season changes
+            }}
+          />
+        </div>
       )}
 
       {/* Content */}
-      {selectedLeague ? (
-        <div className="mt-6">
-          {filteredMatches.length > 0 ? (
-            <MatchList matches={filteredMatches} />
-          ) : (
+      {selectedLeague && selectedSeason ? (
+        <div className="space-y-6">
+          {/* Tabs */}
+          <div className="border-b border-gray-200 dark:border-gray-700">
+            <nav className="flex space-x-8">
+              <button
+                onClick={() => setActiveTab('fixtures')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === 'fixtures'
+                    ? 'border-primary-600 text-primary-600'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
+                }`}
+              >
+                Fixtures & Results
+              </button>
+              <button
+                onClick={() => setActiveTab('standings')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === 'standings'
+                    ? 'border-primary-600 text-primary-600'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
+                }`}
+              >
+                Table
+              </button>
+            </nav>
+          </div>
+
+          {/* Tab Content */}
+          {activeTab === 'fixtures' && (
+            <RoundSelector
+              rounds={filteredRounds}
+              selectedRound={selectedRound}
+              onRoundSelect={setSelectedRound}
+              matches={roundMatches}
+              onMatchClick={handleMatchClick}
+            />
+          )}
+
+          {activeTab === 'standings' && currentStanding && (
+            <StandingsTable standing={currentStanding} />
+          )}
+
+          {activeTab === 'standings' && !currentStanding && (
             <div className="text-center py-12">
-              <div className="text-gray-400 dark:text-gray-500 text-lg mb-2">🏆</div>
+              <div className="text-gray-400 dark:text-gray-500 text-6xl mb-4">📊</div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                No standings available
+              </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                No matches found for the selected criteria
+                Standings data is not available for this league and season
               </p>
             </div>
           )}
         </div>
       ) : (
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {leagues.map((league) => (
             <div
               key={league.id}

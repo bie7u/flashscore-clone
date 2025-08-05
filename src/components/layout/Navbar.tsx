@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Trophy, Calendar, TrendingUp } from 'lucide-react';
+import { Home, Trophy, Calendar, TrendingUp, Radio } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const navItems = [
     { to: '/', icon: Home, label: 'Home' },
+    { to: '/live', icon: Radio, label: 'Live' },
     { to: '/leagues', icon: Trophy, label: 'Leagues' },
     { to: '/fixtures', icon: Calendar, label: 'Fixtures' },
     { to: '/standings', icon: TrendingUp, label: 'Standings' },

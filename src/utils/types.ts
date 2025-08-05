@@ -14,6 +14,37 @@ export interface Season {
   leagueId: string;
 }
 
+export interface Round {
+  id: string;
+  leagueId: string;
+  seasonId: string;
+  roundNumber: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface StandingEntry {
+  position: number;
+  teamId: string;
+  teamName: string;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDifference: number;
+  points: number;
+}
+
+export interface Standing {
+  id: string;
+  leagueId: string;
+  seasonId: string;
+  table: StandingEntry[];
+}
+
 export interface Team {
   id: string;
   name: string;
@@ -25,6 +56,7 @@ export interface Match {
   id: string;
   leagueId: string;
   seasonId: string;
+  roundId?: string;
   homeTeam: Team;
   awayTeam: Team;
   status: MatchStatus;

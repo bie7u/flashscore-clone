@@ -3,7 +3,7 @@
     {
       "id": "match1",
       "leagueId": "pl",
-      "seasonId": "2024",
+      "seasonId": "2025",
       "homeTeam": {
         "id": "mu",
         "name": "Manchester United",
@@ -22,7 +22,7 @@
     {
       "id": "match2",
       "leagueId": "pl",
-      "seasonId": "2024",
+      "seasonId": "2025",
       "homeTeam": {
         "id": "mcfc",
         "name": "Manchester City",
@@ -40,7 +40,7 @@
     {
       "id": "match3",
       "leagueId": "pl",
-      "seasonId": "2024",
+      "seasonId": "2025",
       "homeTeam": {
         "id": "cfc",
         "name": "Chelsea",
@@ -58,7 +58,7 @@
     {
       "id": "match4",
       "leagueId": "pl",
-      "seasonId": "2024",
+      "seasonId": "2025",
       "homeTeam": {
         "id": "nufc",
         "name": "Newcastle United",
@@ -77,7 +77,7 @@
     {
       "id": "match5",
       "leagueId": "laliga",
-      "seasonId": "2024-laliga",
+      "seasonId": "2025-laliga",
       "homeTeam": {
         "id": "rm",
         "name": "Real Madrid",
@@ -95,7 +95,7 @@
     {
       "id": "match6",
       "leagueId": "pl",
-      "seasonId": "2024",
+      "seasonId": "2025",
       "homeTeam": {
         "id": "bha",
         "name": "Brighton & Hove Albion",
@@ -113,7 +113,7 @@
     {
       "id": "match7",
       "leagueId": "bundesliga",
-      "seasonId": "2024-bundesliga",
+      "seasonId": "2025-bundesliga",
       "homeTeam": {
         "id": "fcbm",
         "name": "Bayern Munich",
