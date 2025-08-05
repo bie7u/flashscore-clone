@@ -6,10 +6,7 @@ import MatchList from '../components/match/MatchList';
 import LeagueSelector from '../components/league/LeagueSelector';
 import DatePicker from '../components/common/DatePicker';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-
-// Import mock data
-import matchesData from '../mock-data/matches.json';
-import leaguesData from '../mock-data/leagues.json';
+import { apiService } from '../utils/apiService';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -20,12 +17,29 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API loading
-    setTimeout(() => {
-      setMatches(matchesData.matches as Match[]);
-      setLeagues(leaguesData.leagues);
-      setLoading(false);
-    }, 1000);
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        
+        // Load matches and leagues in parallel
+        const [matchesResponse, leaguesResponse] = await Promise.all([
+          apiService.getMatches(),
+          apiService.getLeagues()
+        ]);
+
+        setMatches(matchesResponse.matches);
+        setLeagues(leaguesResponse.leagues);
+      } catch (error) {
+        console.error('Error loading home data:', error);
+        // Fallback to empty arrays on error
+        setMatches([]);
+        setLeagues([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
   // Filter matches based on selected date and league

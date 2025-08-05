@@ -5,10 +5,7 @@ import type { Match, MatchEvent } from '../utils/types';
 import MatchDetails from '../components/match/MatchDetails';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
-
-// Import mock data
-import matchesData from '../mock-data/matches.json';
-import eventsData from '../mock-data/events.json';
+import { apiService } from '../utils/apiService';
 
 const MatchDetailsPage: React.FC = () => {
   const { matchId } = useParams<{ matchId: string }>();
@@ -25,21 +22,28 @@ const MatchDetailsPage: React.FC = () => {
       return;
     }
 
-    // Simulate API loading
-    setTimeout(() => {
-      const foundMatch = matchesData.matches.find(m => m.id === matchId);
-      if (!foundMatch) {
-        setError('Match not found');
-        setLoading(false);
-        return;
-      }
+    const loadMatchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-      const matchEvents = eventsData.events.filter(e => e.matchId === matchId);
-      
-      setMatch(foundMatch as Match);
-      setEvents(matchEvents as MatchEvent[]);
-      setLoading(false);
-    }, 800);
+        // Load match and events in parallel
+        const [matchData, eventsData] = await Promise.all([
+          apiService.getMatch(matchId),
+          apiService.getMatchEvents(matchId)
+        ]);
+
+        setMatch(matchData);
+        setEvents(eventsData.events);
+      } catch (error) {
+        console.error('Error loading match data:', error);
+        setError('Failed to load match data. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadMatchData();
   }, [matchId]);
 
   const handleBack = () => {
@@ -59,14 +63,14 @@ const MatchDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
       {/* Back Button */}
       <button
         onClick={handleBack}
-        className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-6 transition-colors"
+        className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4 sm:mb-6 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
-        <span>Back to matches</span>
+        <span className="text-sm sm:text-base">Back to matches</span>
       </button>
 
       {/* Match Details */}

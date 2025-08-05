@@ -5,10 +5,7 @@ import { filterMatchesByLeague } from '../utils/matchUtils';
 import MatchList from '../components/match/MatchList';
 import LeagueSelector from '../components/league/LeagueSelector';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-
-// Import mock data
-import matchesData from '../mock-data/matches.json';
-import leaguesData from '../mock-data/leagues.json';
+import { apiService } from '../utils/apiService';
 
 const Live: React.FC = () => {
   const navigate = useNavigate();
@@ -18,24 +15,34 @@ const Live: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API loading
-    setTimeout(() => {
-      setMatches(matchesData.matches as Match[]);
-      setLeagues(leaguesData.leagues);
-      setLoading(false);
-    }, 800);
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        
+        // Load live matches and leagues in parallel
+        const [matchesResponse, leaguesResponse] = await Promise.all([
+          apiService.getMatches({ status: 'LIVE' }),
+          apiService.getLeagues()
+        ]);
+
+        setMatches(matchesResponse.matches);
+        setLeagues(leaguesResponse.leagues);
+      } catch (error) {
+        console.error('Error loading live data:', error);
+        // Fallback to empty arrays on error
+        setMatches([]);
+        setLeagues([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
-  // Filter for live matches only
+  // Filter for live matches only (they're already filtered by the API call, but filter by league)
   const liveMatches = React.useMemo(() => {
-    let filtered = matches.filter(match => match.status === 'LIVE');
-    
-    // Filter by league if selected
-    if (selectedLeague) {
-      filtered = filterMatchesByLeague(filtered, selectedLeague);
-    }
-    
-    return filtered;
+    return filterMatchesByLeague(matches, selectedLeague);
   }, [matches, selectedLeague]);
 
   const handleMatchClick = (match: Match) => {

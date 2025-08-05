@@ -5,13 +5,7 @@ import SeasonSelector from '../components/league/SeasonSelector';
 import RoundSelector from '../components/league/RoundSelector';
 import StandingsTable from '../components/league/StandingsTable';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-
-// Import mock data
-import leaguesData from '../mock-data/leagues.json';
-import seasonsData from '../mock-data/seasons.json';
-import matchesData from '../mock-data/matches.json';
-import roundsData from '../mock-data/rounds.json';
-import standingsData from '../mock-data/standings.json';
+import { apiService } from '../utils/apiService';
 
 type TabType = 'fixtures' | 'standings';
 
@@ -29,15 +23,38 @@ const LeagueOverview: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API loading
-    setTimeout(() => {
-      setLeagues(leaguesData.leagues);
-      setSeasons(seasonsData.seasons);
-      setMatches(matchesData.matches as Match[]);
-      setRounds(roundsData.rounds);
-      setStandings(standingsData.standings);
-      setLoading(false);
-    }, 800);
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        
+        // Load all data in parallel
+        const [leaguesResponse, seasonsResponse, matchesResponse, roundsResponse, standingsResponse] = await Promise.all([
+          apiService.getLeagues(),
+          apiService.getSeasons(),
+          apiService.getMatches(),
+          apiService.getRounds(),
+          apiService.getStandings()
+        ]);
+
+        setLeagues(leaguesResponse.leagues);
+        setSeasons(seasonsResponse.seasons);
+        setMatches(matchesResponse.matches);
+        setRounds(roundsResponse.rounds);
+        setStandings(standingsResponse.standings);
+      } catch (error) {
+        console.error('Error loading league overview data:', error);
+        // Fallback to empty arrays on error
+        setLeagues([]);
+        setSeasons([]);
+        setMatches([]);
+        setRounds([]);
+        setStandings([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
   // Auto-select the current season (2025) when a league is selected
