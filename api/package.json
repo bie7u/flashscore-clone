@@ -1,0 +1,15 @@
+{
+  "name": "flashscore-api",
+  "version": "1.0.0",
+  "description": "Simple API server for FlashScore clone with mocked data",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "cors": "^2.8.5"
+  }
+}
