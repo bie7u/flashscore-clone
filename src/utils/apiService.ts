@@ -2,7 +2,7 @@ import type { League, Team, Match, MatchEvent, Standing, Round, Season } from '.
 
 const API_BASE_URL = import.meta.env.PROD 
   ? '/api' 
-  : 'http://localhost:3001/api';
+  : 'http://localhost:8000/api';
 
 class ApiService {
   private async fetchData<T>(endpoint: string): Promise<T> {
@@ -65,6 +65,46 @@ class ApiService {
     
     const queryString = params.toString();
     return this.fetchData<{ standings: Standing[] }>(`/standings${queryString ? '?' + queryString : ''}`);
+  }
+
+  async updateAllStandings(): Promise<{ status: string; message: string; details: string }> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/standings/update_all/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to update standings:', error);
+      throw error;
+    }
+  }
+
+  async updateStanding(standingId: string): Promise<{ status: string; message: string; details: string }> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/standings/${standingId}/update_single/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error(`Failed to update standing ${standingId}:`, error);
+      throw error;
+    }
   }
 
   // Rounds
