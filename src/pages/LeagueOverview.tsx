@@ -129,7 +129,7 @@ const LeagueOverview: React.FC = () => {
   const currentStanding = React.useMemo(() => {
     if (!selectedLeague || !selectedSeason) return null;
     return standings.find(standing => standing.seasonId === selectedSeason);
-  }, [standings, selectedSeason]);
+  }, [standings, selectedSeason, selectedLeague]);
 
   const selectedLeagueData = leagues.find(league => league.id === selectedLeague);
 
