@@ -59,7 +59,7 @@ const StandingsTable: React.FC<StandingsTableProps> = ({ standing }) => {
           </thead>
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {standing.table.map((entry) => (
-              <tr key={entry.teamId} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <tr key={entry.team} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`text-sm font-medium ${getPositionColor(entry.position)}`}>
                     {entry.position}
@@ -69,11 +69,11 @@ const StandingsTable: React.FC<StandingsTableProps> = ({ standing }) => {
                   <div className="flex items-center">
                     <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center mr-3">
                       <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                        {entry.teamName.substring(0, 2).toUpperCase()}
+                        {entry.team_name.substring(0, 2).toUpperCase()}
                       </span>
                     </div>
                     <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      {entry.teamName}
+                      {entry.team_name}
                     </span>
                   </div>
                 </td>
@@ -90,14 +90,14 @@ const StandingsTable: React.FC<StandingsTableProps> = ({ standing }) => {
                   {entry.lost}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-700 dark:text-gray-300">
-                  {entry.goalsFor}
+                  {entry.goals_for}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-700 dark:text-gray-300">
-                  {entry.goalsAgainst}
+                  {entry.goals_against}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-center text-sm">
-                  <span className={entry.goalDifference >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}>
-                    {entry.goalDifference > 0 ? '+' : ''}{entry.goalDifference}
+                  <span className={entry.goal_difference >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}>
+                    {entry.goal_difference > 0 ? '+' : ''}{entry.goal_difference}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-center">

@@ -4,6 +4,7 @@ export interface League {
   id: number;
   name: string;
   logo: string;
+  country: string;
 }
 
 export interface Season {
@@ -116,13 +117,13 @@ export interface MatchListProps {
 export interface LeagueSelectorProps {
   leagues: League[];
   selectedLeague?: number;
-  onLeagueSelect: (leagueId: number) => void;
+  onLeagueSelect: (leagueId: number | null) => void;
 }
 
 export interface SeasonSelectorProps {
   seasons: Season[];
-  selectedSeason?: number;
-  onSeasonSelect: (seasonId: number) => void;
+  selectedSeason?: string;
+  onSeasonSelect: (seasonId: string) => void;
 }
 
 // Utility types

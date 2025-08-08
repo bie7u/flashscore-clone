@@ -17,7 +17,7 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({
   matches,
   onMatchClick
 }) => {
-  const selectedRoundData = rounds.find(round => round.id === selectedRound);
+  const selectedRoundData = rounds.find(round => round.id === parseInt(selectedRound));
 
   return (
     <div className="space-y-6">
@@ -30,9 +30,9 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({
           {rounds.map((round) => (
             <button
               key={round.id}
-              onClick={() => onRoundSelect(round.id)}
+              onClick={() => onRoundSelect(round.id.toString())}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                selectedRound === round.id
+                selectedRound === round.id.toString()
                   ? 'bg-primary-600 text-white'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
@@ -52,7 +52,7 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({
                 {selectedRoundData.name}
               </h3>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                {new Date(selectedRoundData.startDate).toLocaleDateString()} - {new Date(selectedRoundData.endDate).toLocaleDateString()}
+                {new Date(selectedRoundData.start_date).toLocaleDateString()} - {new Date(selectedRoundData.end_date).toLocaleDateString()}
               </div>
             </div>
           </div>
