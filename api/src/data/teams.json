@@ -1,79 +1,124 @@
 {
   "teams": [
     {
-      "id": "mu",
+      "id": 1,
       "name": "Manchester United",
-      "logo": "/assets/team-logos/manchester-united.png"
+      "logo": "/assets/team-logos/manchester-united.png",
+      "founded": 1878,
+      "stadium": "Old Trafford",
+      "website": "https://www.manutd.com"
     },
     {
-      "id": "lfc",
+      "id": 2,
       "name": "Liverpool",
-      "logo": "/assets/team-logos/liverpool.png"
+      "logo": "/assets/team-logos/liverpool.png",
+      "founded": 1892,
+      "stadium": "Anfield",
+      "website": "https://www.liverpoolfc.com"
     },
     {
-      "id": "mcfc",
+      "id": 3,
       "name": "Manchester City",
-      "logo": "/assets/team-logos/manchester-city.png"
+      "logo": "/assets/team-logos/manchester-city.png",
+      "founded": 1880,
+      "stadium": "Etihad Stadium",
+      "website": "https://www.mancity.com"
     },
     {
-      "id": "cfc",
+      "id": 4,
       "name": "Chelsea",
-      "logo": "/assets/team-logos/chelsea.png"
+      "logo": "/assets/team-logos/chelsea.png",
+      "founded": 1905,
+      "stadium": "Stamford Bridge",
+      "website": "https://www.chelseafc.com"
     },
     {
-      "id": "afc",
+      "id": 5,
       "name": "Arsenal",
-      "logo": "/assets/team-logos/arsenal.png"
+      "logo": "/assets/team-logos/arsenal.png",
+      "founded": 1886,
+      "stadium": "Emirates Stadium",
+      "website": "https://www.arsenal.com"
     },
     {
-      "id": "thfc",
+      "id": 6,
       "name": "Tottenham",
-      "logo": "/assets/team-logos/tottenham.png"
+      "logo": "/assets/team-logos/tottenham.png",
+      "founded": 1882,
+      "stadium": "Tottenham Hotspur Stadium",
+      "website": "https://www.tottenhamhotspur.com"
     },
     {
-      "id": "nufc",
+      "id": 7,
       "name": "Newcastle United",
-      "logo": "/assets/team-logos/newcastle.png"
+      "logo": "/assets/team-logos/newcastle.png",
+      "founded": 1892,
+      "stadium": "St. James' Park",
+      "website": "https://www.nufc.co.uk"
     },
     {
-      "id": "whu",
+      "id": 8,
       "name": "West Ham United",
-      "logo": "/assets/team-logos/west-ham.png"
+      "logo": "/assets/team-logos/west-ham.png",
+      "founded": 1895,
+      "stadium": "London Stadium",
+      "website": "https://www.whufc.com"
     },
     {
-      "id": "bha",
+      "id": 9,
       "name": "Brighton & Hove Albion",
-      "logo": "/assets/team-logos/brighton.png"
+      "logo": "/assets/team-logos/brighton.png",
+      "founded": 1901,
+      "stadium": "Amex Stadium",
+      "website": "https://www.brightonandhovealbion.com"
     },
     {
-      "id": "avfc",
+      "id": 10,
       "name": "Aston Villa",
-      "logo": "/assets/team-logos/aston-villa.png"
+      "logo": "/assets/team-logos/aston-villa.png",
+      "founded": 1874,
+      "stadium": "Villa Park",
+      "website": "https://www.avfc.co.uk"
     },
     {
-      "id": "rm",
+      "id": 11,
       "name": "Real Madrid",
-      "logo": "/assets/team-logos/real-madrid.png"
+      "logo": "/assets/team-logos/real-madrid.png",
+      "founded": 1902,
+      "stadium": "Santiago Bernabéu",
+      "website": "https://www.realmadrid.com"
     },
     {
-      "id": "fcb",
+      "id": 12,
       "name": "Barcelona",
-      "logo": "/assets/team-logos/barcelona.png"
+      "logo": "/assets/team-logos/barcelona.png",
+      "founded": 1899,
+      "stadium": "Camp Nou",
+      "website": "https://www.fcbarcelona.com"
     },
     {
-      "id": "am",
+      "id": 13,
       "name": "Atletico Madrid",
-      "logo": "/assets/team-logos/atletico-madrid.png"
+      "logo": "/assets/team-logos/atletico-madrid.png",
+      "founded": 1903,
+      "stadium": "Wanda Metropolitano",
+      "website": "https://www.atleticodemadrid.com"
     },
     {
-      "id": "fcbm",
+      "id": 14,
       "name": "Bayern Munich",
-      "logo": "/assets/team-logos/bayern-munich.png"
+      "logo": "/assets/team-logos/bayern-munich.png",
+      "founded": 1900,
+      "stadium": "Allianz Arena",
+      "website": "https://fcbayern.com"
     },
     {
-      "id": "bvb",
+      "id": 15,
       "name": "Borussia Dortmund",
-      "logo": "/assets/team-logos/borussia-dortmund.png"
+      "logo": "/assets/team-logos/borussia-dortmund.png",
+      "founded": 1909,
+      "stadium": "Signal Iduna Park",
+      "website": "https://www.bvb.de"
     }
   ]
 }

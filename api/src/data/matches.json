@@ -1,132 +1,116 @@
 {
   "matches": [
     {
-      "id": "match1",
-      "leagueId": "pl",
-      "seasonId": "2025",
-      "homeTeam": {
-        "id": "mu",
-        "name": "Manchester United",
-        "score": 2
-      },
-      "awayTeam": {
-        "id": "lfc",
-        "name": "Liverpool",
-        "score": 1
-      },
+      "id": 123,
+      "league": 1,
+      "league_read": "Premier League",
+      "season": 2024,
+      "round": 38,
+      "round_number_read": "38",
+      "home_team": {"id": 1, "name": "Manchester United", "score": 2},
+      "away_team": {"id": 2, "name": "Liverpool", "score": 1},
+      "home_score": 2,
+      "away_score": 1,
       "status": "LIVE",
       "minute": 67,
       "date": "2025-08-05T15:00:00Z",
       "venue": "Old Trafford"
     },
     {
-      "id": "match2",
-      "leagueId": "pl",
-      "seasonId": "2025",
-      "homeTeam": {
-        "id": "mcfc",
-        "name": "Manchester City",
-        "score": 3
-      },
-      "awayTeam": {
-        "id": "afc",
-        "name": "Arsenal",
-        "score": 1
-      },
+      "id": 124,
+      "league": 1,
+      "league_read": "Premier League",
+      "season": 2024,
+      "round": 38,
+      "round_number_read": "38",
+      "home_team": {"id": 3, "name": "Manchester City", "score": 3},
+      "away_team": {"id": 5, "name": "Arsenal", "score": 1},
+      "home_score": 3,
+      "away_score": 1,
       "status": "FINISHED",
+      "minute": 90,
       "date": "2025-08-05T12:30:00Z",
       "venue": "Etihad Stadium"
     },
     {
-      "id": "match3",
-      "leagueId": "pl",
-      "seasonId": "2025",
-      "homeTeam": {
-        "id": "cfc",
-        "name": "Chelsea",
-        "score": null
-      },
-      "awayTeam": {
-        "id": "thfc",
-        "name": "Tottenham",
-        "score": null
-      },
+      "id": 125,
+      "league": 1,
+      "league_read": "Premier League",
+      "season": 2024,
+      "round": 39,
+      "round_number_read": "39",
+      "home_team": {"id": 4, "name": "Chelsea", "score": null},
+      "away_team": {"id": 6, "name": "Tottenham", "score": null},
+      "home_score": null,
+      "away_score": null,
       "status": "SCHEDULED",
-      "date": "2025-08-05T17:30:00Z",
+      "minute": null,
+      "date": "2025-08-06T17:30:00Z",
       "venue": "Stamford Bridge"
     },
     {
-      "id": "match4",
-      "leagueId": "pl",
-      "seasonId": "2025",
-      "homeTeam": {
-        "id": "nufc",
-        "name": "Newcastle United",
-        "score": 0
-      },
-      "awayTeam": {
-        "id": "whu",
-        "name": "West Ham United",
-        "score": 0
-      },
-      "status": "LIVE",
-      "minute": 34,
-      "date": "2025-08-05T15:00:00Z",
+      "id": 126,
+      "league": 1,
+      "league_read": "Premier League",
+      "season": 2024,
+      "round": 39,
+      "round_number_read": "39",
+      "home_team": {"id": 7, "name": "Newcastle United", "score": null},
+      "away_team": {"id": 8, "name": "West Ham United", "score": null},
+      "home_score": null,
+      "away_score": null,
+      "status": "SCHEDULED",
+      "minute": null,
+      "date": "2025-08-06T15:00:00Z",
       "venue": "St. James' Park"
     },
     {
-      "id": "match5",
-      "leagueId": "laliga",
-      "seasonId": "2025-laliga",
-      "homeTeam": {
-        "id": "rm",
-        "name": "Real Madrid",
-        "score": 2
-      },
-      "awayTeam": {
-        "id": "fcb",
-        "name": "Barcelona",
-        "score": 3
-      },
-      "status": "FINISHED",
-      "date": "2025-08-04T20:00:00Z",
-      "venue": "Santiago Bernabéu"
-    },
-    {
-      "id": "match6",
-      "leagueId": "pl",
-      "seasonId": "2025",
-      "homeTeam": {
-        "id": "bha",
-        "name": "Brighton & Hove Albion",
-        "score": null
-      },
-      "awayTeam": {
-        "id": "avfc",
-        "name": "Aston Villa",
-        "score": null
-      },
+      "id": 127,
+      "league": 1,
+      "league_read": "Premier League",
+      "season": 2024,
+      "round": 39,
+      "round_number_read": "39",
+      "home_team": {"id": 9, "name": "Brighton & Hove Albion", "score": null},
+      "away_team": {"id": 10, "name": "Aston Villa", "score": null},
+      "home_score": null,
+      "away_score": null,
       "status": "SCHEDULED",
+      "minute": null,
       "date": "2025-08-06T14:00:00Z",
       "venue": "Amex Stadium"
     },
     {
-      "id": "match7",
-      "leagueId": "bundesliga",
-      "seasonId": "2025-bundesliga",
-      "homeTeam": {
-        "id": "fcbm",
-        "name": "Bayern Munich",
-        "score": 4
-      },
-      "awayTeam": {
-        "id": "bvb",
-        "name": "Borussia Dortmund",
-        "score": 2
-      },
+      "id": 128,
+      "league": 3,
+      "league_read": "Bundesliga",
+      "season": 2024,
+      "round": 34,
+      "round_number_read": "34",
+      "home_team": {"id": 14, "name": "Bayern Munich", "score": 4},
+      "away_team": {"id": 15, "name": "Borussia Dortmund", "score": 2},
+      "home_score": 4,
+      "away_score": 2,
       "status": "FINISHED",
+      "minute": 90,
       "date": "2025-08-04T18:30:00Z",
       "venue": "Allianz Arena"
+    },
+    {
+      "id": 129,
+      "league": 2,
+      "league_read": "La Liga",
+      "season": 2024,
+      "round": 38,
+      "round_number_read": "38",
+      "home_team": {"id": 11, "name": "Real Madrid", "score": 2},
+      "away_team": {"id": 12, "name": "Barcelona", "score": 2},
+      "home_score": 2,
+      "away_score": 2,
+      "status": "FINISHED",
+      "minute": 90,
+      "date": "2025-08-03T20:00:00Z",
+      "venue": "Santiago Bernabéu"
     }
   ]
 }

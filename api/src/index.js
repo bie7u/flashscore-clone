@@ -10,8 +10,10 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
+// Middleware with CORS configuration
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173']
+}));
 app.use(express.json());
 
 // Load mock data
@@ -35,85 +37,113 @@ const seasons = loadData('seasons.json');
 
 // API Routes
 
-// Health check
+// 1. Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'FlashScore API is running' });
+  res.json({ status: 'OK', message: 'FlashScore Django API is running' });
 });
 
-// Get all leagues
-app.get('/api/leagues', (req, res) => {
+// 2. Leagues
+app.get('/api/leagues/', (req, res) => {
   const { league_name } = req.query;
   
   if (!leagues) {
     return res.status(500).json({ error: 'Failed to load leagues data' });
   }
   
+  let result = leagues.leagues;
+  
   if (league_name) {
-    const filteredLeagues = leagues.leagues.filter(league => 
-      league.name.toLowerCase().replace(/\s+/g, '_') === league_name.toLowerCase()
+    // Handle underscores as spaces and do partial matching
+    const searchName = league_name.toLowerCase().replace(/_/g, ' ');
+    result = result.filter(league => 
+      league.name.toLowerCase().includes(searchName)
     );
-    res.json({ leagues: filteredLeagues });
-  } else {
-    res.json(leagues);
   }
+  
+  res.json(result);
 });
 
-// Get teams
-app.get('/api/teams', (req, res) => {
-  const { leagueId } = req.query;
+app.get('/api/leagues/:id/', (req, res) => {
+  const { id } = req.params;
+  
+  if (!leagues) {
+    return res.status(500).json({ error: 'Failed to load leagues data' });
+  }
+  
+  const league = leagues.leagues.find(l => l.id === parseInt(id));
+  
+  if (!league) {
+    return res.status(404).json({ error: 'League not found' });
+  }
+  
+  res.json(league);
+});
+
+// 3. Teams
+app.get('/api/teams/', (req, res) => {
+  if (!teams) {
+    return res.status(500).json({ error: 'Failed to load teams data' });
+  }
+  
+  res.json(teams.teams);
+});
+
+app.get('/api/teams/:id/', (req, res) => {
+  const { id } = req.params;
   
   if (!teams) {
     return res.status(500).json({ error: 'Failed to load teams data' });
   }
   
-  if (leagueId) {
-    const filteredTeams = teams.teams.filter(team => team.leagueId === leagueId);
-    res.json({ teams: filteredTeams });
-  } else {
-    res.json(teams);
+  const team = teams.teams.find(t => t.id === parseInt(id));
+  
+  if (!team) {
+    return res.status(404).json({ error: 'Team not found' });
   }
+  
+  res.json(team);
 });
 
-// Get matches
-app.get('/api/matches', (req, res) => {
-  const { leagueId, status, date, teamId } = req.query;
+// 4. Matches
+app.get('/api/matches/', (req, res) => {
+  const { league_id, status, date, team_id } = req.query;
   
   if (!matches) {
     return res.status(500).json({ error: 'Failed to load matches data' });
   }
   
-  let filteredMatches = matches.matches;
+  let result = matches.matches;
   
-  if (leagueId) {
-    filteredMatches = filteredMatches.filter(match => match.leagueId === leagueId);
+  if (league_id) {
+    result = result.filter(match => match.league === parseInt(league_id));
   }
   
   if (status) {
-    filteredMatches = filteredMatches.filter(match => match.status === status);
+    result = result.filter(match => match.status === status);
   }
   
   if (date) {
-    filteredMatches = filteredMatches.filter(match => match.date.startsWith(date));
+    result = result.filter(match => match.date.startsWith(date));
   }
   
-  if (teamId) {
-    filteredMatches = filteredMatches.filter(match => 
-      match.homeTeam.id === teamId || match.awayTeam.id === teamId
+  if (team_id) {
+    const teamIdInt = parseInt(team_id);
+    result = result.filter(match => 
+      match.home_team.id === teamIdInt || match.away_team.id === teamIdInt
     );
   }
   
-  res.json({ matches: filteredMatches });
+  res.json(result);
 });
 
-// Get specific match
-app.get('/api/matches/:matchId', (req, res) => {
-  const { matchId } = req.params;
+app.get('/api/matches/:id/', (req, res) => {
+  const { id } = req.params;
   
   if (!matches) {
     return res.status(500).json({ error: 'Failed to load matches data' });
   }
   
-  const match = matches.matches.find(m => m.id === matchId);
+  const match = matches.matches.find(m => m.id === parseInt(id));
   
   if (!match) {
     return res.status(404).json({ error: 'Match not found' });
@@ -122,63 +152,78 @@ app.get('/api/matches/:matchId', (req, res) => {
   res.json(match);
 });
 
-// Get match events
-app.get('/api/matches/:matchId/events', (req, res) => {
-  const { matchId } = req.params;
+app.get('/api/matches/:id/events/', (req, res) => {
+  const { id } = req.params;
   
   if (!events) {
     return res.status(500).json({ error: 'Failed to load events data' });
   }
   
-  const matchEvents = events.events.filter(event => event.matchId === matchId);
+  const matchEvents = events.events.filter(event => event.match === parseInt(id));
   res.json({ events: matchEvents });
 });
 
-// Get standings
-app.get('/api/standings', (req, res) => {
-  const { leagueId, season } = req.query;
+// 5. Standings
+app.get('/api/standings/', (req, res) => {
+  const { league, season } = req.query;
   
   if (!standings) {
     return res.status(500).json({ error: 'Failed to load standings data' });
   }
   
-  let filteredStandings = standings.standings;
+  let result = standings.standings;
   
-  if (leagueId) {
-    filteredStandings = filteredStandings.filter(standing => standing.leagueId === leagueId);
+  if (league) {
+    result = result.filter(standing => standing.league === parseInt(league));
   }
   
   if (season) {
-    filteredStandings = filteredStandings.filter(standing => standing.season === season);
+    result = result.filter(standing => standing.season === parseInt(season));
   }
   
-  res.json({ standings: filteredStandings });
+  res.json(result);
 });
 
-// Get rounds
-app.get('/api/rounds', (req, res) => {
-  const { leagueId, season } = req.query;
+app.get('/api/standings/:id/', (req, res) => {
+  const { id } = req.params;
+  
+  if (!standings) {
+    return res.status(500).json({ error: 'Failed to load standings data' });
+  }
+  
+  const standing = standings.standings.find(s => s.id === parseInt(id));
+  
+  if (!standing) {
+    return res.status(404).json({ error: 'Standing not found' });
+  }
+  
+  res.json(standing);
+});
+
+// 6. Rounds
+app.get('/api/rounds/', (req, res) => {
+  const { league, season } = req.query;
   
   if (!rounds || !matches) {
     return res.status(500).json({ error: 'Failed to load rounds or matches data' });
   }
   
-  let filteredRounds = rounds.rounds;
+  let result = rounds.rounds;
   
-  if (leagueId) {
-    filteredRounds = filteredRounds.filter(round => round.leagueId === leagueId);
+  if (league) {
+    result = result.filter(round => round.league === parseInt(league));
   }
   
   if (season) {
-    filteredRounds = filteredRounds.filter(round => round.season === season);
+    result = result.filter(round => round.season === parseInt(season));
   }
   
   // Add matches to each round
-  const roundsWithMatches = filteredRounds.map(round => {
+  const roundsWithMatches = result.map(round => {
     const roundMatches = matches.matches.filter(match => 
-      match.round === round.round && 
-      match.leagueId === round.leagueId &&
-      (!season || match.season === season)
+      match.round === round.round_number && 
+      match.league === round.league &&
+      (!season || match.season === parseInt(season))
     );
     return {
       ...round,
@@ -186,23 +231,65 @@ app.get('/api/rounds', (req, res) => {
     };
   });
   
-  res.json({ rounds: roundsWithMatches });
+  res.json(roundsWithMatches);
 });
 
-// Get seasons
-app.get('/api/seasons', (req, res) => {
-  const { leagueId } = req.query;
+app.get('/api/rounds/:id/', (req, res) => {
+  const { id } = req.params;
+  
+  if (!rounds || !matches) {
+    return res.status(500).json({ error: 'Failed to load rounds or matches data' });
+  }
+  
+  const round = rounds.rounds.find(r => r.id === parseInt(id));
+  
+  if (!round) {
+    return res.status(404).json({ error: 'Round not found' });
+  }
+  
+  // Add matches to the round
+  const roundMatches = matches.matches.filter(match => 
+    match.round === round.round_number && 
+    match.league === round.league
+  );
+  
+  res.json({
+    ...round,
+    matches: roundMatches
+  });
+});
+
+// 7. Seasons
+app.get('/api/seasons/', (req, res) => {
+  const { league } = req.query;
   
   if (!seasons) {
     return res.status(500).json({ error: 'Failed to load seasons data' });
   }
   
-  if (leagueId) {
-    const leagueSeasons = seasons.seasons.filter(season => season.leagueId === leagueId);
-    res.json({ seasons: leagueSeasons });
-  } else {
-    res.json(seasons);
+  let result = seasons.seasons;
+  
+  if (league) {
+    result = result.filter(season => season.league === parseInt(league));
   }
+  
+  res.json(result);
+});
+
+app.get('/api/seasons/:id/', (req, res) => {
+  const { id } = req.params;
+  
+  if (!seasons) {
+    return res.status(500).json({ error: 'Failed to load seasons data' });
+  }
+  
+  const season = seasons.seasons.find(s => s.id === parseInt(id));
+  
+  if (!season) {
+    return res.status(404).json({ error: 'Season not found' });
+  }
+  
+  res.json(season);
 });
 
 // Error handling middleware
