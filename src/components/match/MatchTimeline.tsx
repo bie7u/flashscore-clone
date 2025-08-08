@@ -38,17 +38,17 @@ const MatchTimeline: React.FC<MatchTimelineProps> = ({ events }) => {
 
             {/* Event Icon */}
             <div className="flex-shrink-0 text-lg">
-              {getEventIcon(event.type)}
+              {getEventIcon(event.event_type)}
             </div>
 
             {/* Event Details */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium text-gray-900 dark:text-white">
-                  {event.playerName}
+                  {event.player_name}
                 </span>
                 <span className="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
-                  {event.type.replace('_', ' ')}
+                  {event.event_type.replace('_', ' ')}
                 </span>
               </div>
               {event.description && (

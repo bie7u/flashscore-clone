@@ -1,139 +1,104 @@
 {
   "events": [
     {
-      "id": "event1",
-      "matchId": "match1",
-      "type": "GOAL",
+      "id": 1,
+      "match": 123,
+      "event_type": "GOAL",
       "minute": 23,
-      "teamId": "mu",
-      "playerId": "rashford",
-      "playerName": "Marcus Rashford"
+      "team": 1,
+      "player_id": 10,
+      "player_name": "Marcus Rashford",
+      "description": "Goal by Rashford"
     },
     {
-      "id": "event2",
-      "matchId": "match1",
-      "type": "GOAL",
+      "id": 2,
+      "match": 123,
+      "event_type": "GOAL",
       "minute": 45,
-      "teamId": "lfc",
-      "playerId": "salah",
-      "playerName": "Mohamed Salah"
+      "team": 2,
+      "player_id": 11,
+      "player_name": "Mohamed Salah",
+      "description": "Goal by Salah"
     },
     {
-      "id": "event3",
-      "matchId": "match1",
-      "type": "YELLOW_CARD",
+      "id": 3,
+      "match": 123,
+      "event_type": "YELLOW_CARD",
       "minute": 56,
-      "teamId": "lfc",
-      "playerId": "van_dijk",
-      "playerName": "Virgil van Dijk"
+      "team": 2,
+      "player_id": 4,
+      "player_name": "Virgil van Dijk",
+      "description": "Yellow card for van Dijk"
     },
     {
-      "id": "event4",
-      "matchId": "match1",
-      "type": "GOAL",
-      "minute": 67,
-      "teamId": "mu",
-      "playerId": "fernandes",
-      "playerName": "Bruno Fernandes"
+      "id": 4,
+      "match": 123,
+      "event_type": "GOAL",
+      "minute": 78,
+      "team": 1,
+      "player_id": 7,
+      "player_name": "Cristiano Ronaldo",
+      "description": "Goal by Ronaldo"
     },
     {
-      "id": "event5",
-      "matchId": "match2",
-      "type": "GOAL",
+      "id": 5,
+      "match": 124,
+      "event_type": "GOAL",
       "minute": 12,
-      "teamId": "mcfc",
-      "playerId": "haaland",
-      "playerName": "Erling Haaland"
+      "team": 3,
+      "player_id": 17,
+      "player_name": "Kevin De Bruyne",
+      "description": "Goal by De Bruyne"
     },
     {
-      "id": "event6",
-      "matchId": "match2",
-      "type": "GOAL",
-      "minute": 28,
-      "teamId": "afc",
-      "playerId": "saka",
-      "playerName": "Bukayo Saka"
+      "id": 6,
+      "match": 124,
+      "event_type": "GOAL",
+      "minute": 34,
+      "team": 3,
+      "player_id": 9,
+      "player_name": "Erling Haaland",
+      "description": "Goal by Haaland"
     },
     {
-      "id": "event7",
-      "matchId": "match2",
-      "type": "GOAL",
-      "minute": 35,
-      "teamId": "mcfc",
-      "playerId": "de_bruyne",
-      "playerName": "Kevin De Bruyne"
+      "id": 7,
+      "match": 124,
+      "event_type": "GOAL",
+      "minute": 67,
+      "team": 5,
+      "player_id": 8,
+      "player_name": "Martin Ødegaard",
+      "description": "Goal by Ødegaard"
     },
     {
-      "id": "event8",
-      "matchId": "match2",
-      "type": "GOAL",
-      "minute": 72,
-      "teamId": "mcfc",
-      "playerId": "haaland",
-      "playerName": "Erling Haaland"
+      "id": 8,
+      "match": 124,
+      "event_type": "GOAL",
+      "minute": 89,
+      "team": 3,
+      "player_id": 9,
+      "player_name": "Erling Haaland",
+      "description": "Goal by Haaland"
     },
     {
-      "id": "event9",
-      "matchId": "match5",
-      "type": "GOAL",
+      "id": 9,
+      "match": 128,
+      "event_type": "GOAL",
       "minute": 15,
-      "teamId": "rm",
-      "playerId": "vinicius",
-      "playerName": "Vinícius Jr."
+      "team": 14,
+      "player_id": 25,
+      "player_name": "Robert Lewandowski",
+      "description": "Goal by Lewandowski"
     },
     {
-      "id": "event10",
-      "matchId": "match5",
-      "type": "GOAL",
-      "minute": 33,
-      "teamId": "fcb",
-      "playerId": "lewandowski",
-      "playerName": "Robert Lewandowski"
-    },
-    {
-      "id": "event11",
-      "matchId": "match5",
-      "type": "GOAL",
-      "minute": 55,
-      "teamId": "fcb",
-      "playerId": "pedri",
-      "playerName": "Pedri"
-    },
-    {
-      "id": "event12",
-      "matchId": "match5",
-      "type": "GOAL",
-      "minute": 68,
-      "teamId": "rm",
-      "playerId": "benzema",
-      "playerName": "Karim Benzema"
-    },
-    {
-      "id": "event13",
-      "matchId": "match5",
-      "type": "GOAL",
-      "minute": 84,
-      "teamId": "fcb",
-      "playerId": "gavi",
-      "playerName": "Gavi"
-    },
-    {
-      "id": "event14",
-      "matchId": "match7",
-      "type": "GOAL",
-      "minute": 8,
-      "teamId": "fcbm",
-      "playerId": "kane",
-      "playerName": "Harry Kane"
-    },
-    {
-      "id": "event15",
-      "matchId": "match7",
-      "type": "GOAL",
-      "minute": 22,
-      "teamId": "bvb",
-      "playerId": "bellingham",
-      "playerName": "Jude Bellingham"
+      "id": 10,
+      "match": 128,
+      "event_type": "GOAL",
+      "minute": 32,
+      "team": 15,
+      "player_id": 22,
+      "player_name": "Jude Bellingham",
+      "description": "Goal by Bellingham"
     }
   ]
 }

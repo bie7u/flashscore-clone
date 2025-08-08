@@ -9,7 +9,7 @@ const LeagueSelector: React.FC<LeagueSelectorProps> = ({
   return (
     <div className="flex flex-wrap gap-2 p-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
       <button
-        onClick={() => onLeagueSelect('')}
+        onClick={() => onLeagueSelect(undefined)}
         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
           !selectedLeague
             ? 'bg-primary-600 text-white'
@@ -30,9 +30,6 @@ const LeagueSelector: React.FC<LeagueSelectorProps> = ({
           }`}
         >
           <span>{league.name}</span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {league.country}
-          </span>
         </button>
       ))}
     </div>

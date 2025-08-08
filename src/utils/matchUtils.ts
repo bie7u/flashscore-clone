@@ -52,20 +52,20 @@ export const isMatchScheduled = (match: Match): boolean => {
 };
 
 export const getMatchScore = (match: Match): string => {
-  if (match.homeTeam.score !== undefined && match.awayTeam.score !== undefined) {
-    return `${match.homeTeam.score} - ${match.awayTeam.score}`;
+  if (match.home_score !== null && match.away_score !== null) {
+    return `${match.home_score} - ${match.away_score}`;
   }
   return '';
 };
 
 export const getMatchWinner = (match: Match): 'home' | 'away' | 'draw' | null => {
-  if (match.homeTeam.score === undefined || match.awayTeam.score === undefined) {
+  if (match.home_score === null || match.away_score === null) {
     return null;
   }
   
-  if (match.homeTeam.score > match.awayTeam.score) {
+  if (match.home_score > match.away_score) {
     return 'home';
-  } else if (match.awayTeam.score > match.homeTeam.score) {
+  } else if (match.away_score > match.home_score) {
     return 'away';
   } else {
     return 'draw';
@@ -87,8 +87,8 @@ export const filterMatchesByDate = (matches: Match[], date: Date): Match[] => {
   });
 };
 
-export const filterMatchesByLeague = (matches: Match[], leagueId: string): Match[] => {
-  return matches.filter(match => match.leagueId === leagueId);
+export const filterMatchesByLeague = (matches: Match[], leagueId: number): Match[] => {
+  return matches.filter(match => match.league === leagueId);
 };
 
 export const filterMatchesByStatus = (matches: Match[], status: MatchStatus): Match[] => {

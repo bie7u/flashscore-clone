@@ -1,67 +1,75 @@
 // Base interfaces for the application
 
 export interface League {
-  id: string;
+  id: number;
   name: string;
-  country: string;
   logo: string;
 }
 
 export interface Season {
-  id: string;
-  year: string;
+  id: number;
+  year: number;
   name: string;
-  leagueId: string;
+  league: number;
 }
 
 export interface Round {
-  id: string;
-  leagueId: string;
-  seasonId: string;
-  roundNumber: number;
+  id: number;
+  league: number;
+  league_read: string;
+  season: number;
+  round_number: number;
   name: string;
-  startDate: string;
-  endDate: string;
+  start_date: string;
+  end_date: string;
   matches?: Match[]; // Optional field for when API returns matches with rounds
 }
 
 export interface StandingEntry {
   position: number;
-  teamId: string;
-  teamName: string;
+  team: number;
+  team_name: string;
   played: number;
   won: number;
   drawn: number;
   lost: number;
-  goalsFor: number;
-  goalsAgainst: number;
-  goalDifference: number;
+  goals_for: number;
+  goals_against: number;
+  goal_difference: number;
   points: number;
 }
 
 export interface Standing {
-  id: string;
-  leagueId: string;
-  seasonId: string;
+  id: number;
+  league: number;
+  league_read: string;
+  season: number;
   table: StandingEntry[];
 }
 
 export interface Team {
-  id: string;
+  id: number;
   name: string;
   logo?: string;
+  founded?: number;
+  stadium?: string;
+  website?: string;
   score?: number;
 }
 
 export interface Match {
-  id: string;
-  leagueId: string;
-  seasonId: string;
-  roundId?: string;
-  homeTeam: Team;
-  awayTeam: Team;
+  id: number;
+  league: number;
+  league_read: string;
+  season: number;
+  round: number;
+  round_number_read: string;
+  home_team: Team;
+  away_team: Team;
+  home_score: number | null;
+  away_score: number | null;
   status: MatchStatus;
-  minute?: number;
+  minute?: number | null;
   date: string;
   venue?: string;
 }
@@ -69,20 +77,20 @@ export interface Match {
 export type MatchStatus = 'LIVE' | 'FINISHED' | 'SCHEDULED' | 'POSTPONED' | 'CANCELLED';
 
 export interface MatchEvent {
-  id: string;
-  matchId: string;
-  type: EventType;
+  id: number;
+  match: number;
+  event_type: EventType;
   minute: number;
-  teamId: string;
-  playerId?: string;
-  playerName: string;
+  team: number;
+  player_id?: number;
+  player_name: string;
   description?: string;
 }
 
 export type EventType = 'GOAL' | 'YELLOW_CARD' | 'RED_CARD' | 'SUBSTITUTION' | 'PENALTY' | 'OWN_GOAL';
 
 export interface Player {
-  id: string;
+  id: number;
   name: string;
   position?: string;
   number?: number;
@@ -107,14 +115,14 @@ export interface MatchListProps {
 
 export interface LeagueSelectorProps {
   leagues: League[];
-  selectedLeague?: string;
-  onLeagueSelect: (leagueId: string) => void;
+  selectedLeague?: number;
+  onLeagueSelect: (leagueId: number) => void;
 }
 
 export interface SeasonSelectorProps {
   seasons: Season[];
-  selectedSeason?: string;
-  onSeasonSelect: (seasonId: string) => void;
+  selectedSeason?: number;
+  onSeasonSelect: (seasonId: number) => void;
 }
 
 // Utility types
@@ -124,8 +132,8 @@ export interface DateFilter {
 }
 
 export interface MatchFilters {
-  leagueId?: string;
-  seasonId?: string;
+  league_id?: number;
+  season?: number;
   status?: MatchStatus;
   date?: DateFilter;
 }

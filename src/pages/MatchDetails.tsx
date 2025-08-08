@@ -29,8 +29,8 @@ const MatchDetailsPage: React.FC = () => {
 
         // Load match and events in parallel
         const [matchData, eventsData] = await Promise.all([
-          apiService.getMatch(matchId),
-          apiService.getMatchEvents(matchId)
+          apiService.getMatch(parseInt(matchId)),
+          apiService.getMatchEvents(parseInt(matchId))
         ]);
 
         setMatch(matchData);

@@ -12,7 +12,7 @@ const Home: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [leagues, setLeagues] = useState<League[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedLeague, setSelectedLeague] = useState<string>('');
+  const [selectedLeague, setSelectedLeague] = useState<number | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,13 +27,13 @@ const Home: React.FC = () => {
         const [matchesResponse, leaguesResponse] = await Promise.all([
           apiService.getMatches({ 
             date: dateStr,
-            ...(selectedLeague && { leagueId: selectedLeague })
+            ...(selectedLeague && { league_id: selectedLeague })
           }),
           apiService.getLeagues()
         ]);
 
-        setMatches(matchesResponse.matches);
-        setLeagues(leaguesResponse.leagues);
+        setMatches(matchesResponse);
+        setLeagues(leaguesResponse);
       } catch (error) {
         console.error('Error loading home data:', error);
         // Fallback to empty arrays on error

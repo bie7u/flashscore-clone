@@ -10,7 +10,7 @@ const Live: React.FC = () => {
   const navigate = useNavigate();
   const [matches, setMatches] = useState<Match[]>([]);
   const [leagues, setLeagues] = useState<League[]>([]);
-  const [selectedLeague, setSelectedLeague] = useState<string>('');
+  const [selectedLeague, setSelectedLeague] = useState<number | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,12 +23,12 @@ const Live: React.FC = () => {
           apiService.getLeagues(),
           apiService.getMatches({ 
             status: 'LIVE',
-            ...(selectedLeague && { leagueId: selectedLeague })
+            ...(selectedLeague && { league_id: selectedLeague })
           })
         ]);
 
-        setLeagues(leaguesResponse.leagues);
-        setMatches(matchesResponse.matches);
+        setLeagues(leaguesResponse);
+        setMatches(matchesResponse);
       } catch (error) {
         console.error('Error loading live data:', error);
         // Fallback to empty arrays on error
@@ -48,9 +48,9 @@ const Live: React.FC = () => {
       try {
         const matchesResponse = await apiService.getMatches({ 
           status: 'LIVE',
-          ...(selectedLeague && { leagueId: selectedLeague })
+          ...(selectedLeague && { league_id: selectedLeague })
         });
-        setMatches(matchesResponse.matches);
+        setMatches(matchesResponse);
       } catch (error) {
         console.error('Error refreshing live matches:', error);
       }

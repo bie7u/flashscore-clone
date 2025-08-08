@@ -34,15 +34,15 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onClick }) => {
           <div className="flex items-center space-x-3">
             <div className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
               <span className="text-xs font-bold text-gray-600 dark:text-gray-400">
-                {match.homeTeam.name.charAt(0)}
+                {match.home_team.name.charAt(0)}
               </span>
             </div>
             <span className="text-sm font-medium text-gray-900 dark:text-white">
-              {match.homeTeam.name}
+              {match.home_team.name}
             </span>
           </div>
           <span className="text-lg font-bold text-gray-900 dark:text-white">
-            {match.homeTeam.score ?? '-'}
+            {match.home_score ?? '-'}
           </span>
         </div>
 
@@ -51,15 +51,15 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onClick }) => {
           <div className="flex items-center space-x-3">
             <div className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
               <span className="text-xs font-bold text-gray-600 dark:text-gray-400">
-                {match.awayTeam.name.charAt(0)}
+                {match.away_team.name.charAt(0)}
               </span>
             </div>
             <span className="text-sm font-medium text-gray-900 dark:text-white">
-              {match.awayTeam.name}
+              {match.away_team.name}
             </span>
           </div>
           <span className="text-lg font-bold text-gray-900 dark:text-white">
-            {match.awayTeam.score ?? '-'}
+            {match.away_score ?? '-'}
           </span>
         </div>
       </div>
