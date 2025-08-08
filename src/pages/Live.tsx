@@ -90,7 +90,7 @@ const Live: React.FC = () => {
         <LeagueSelector
           leagues={leagues}
           selectedLeague={selectedLeague}
-          onLeagueSelect={setSelectedLeague}
+          onLeagueSelect={(leagueId) => setSelectedLeague(leagueId || undefined)}
         />
       </div>
 

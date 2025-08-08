@@ -28,7 +28,7 @@ const LeagueOverview: React.FC = () => {
         
         // Load only leagues initially
         const leaguesResponse = await apiService.getLeagues();
-        setLeagues(leaguesResponse.leagues);
+        setLeagues(leaguesResponse || []);
       } catch (error) {
         console.error('Error loading initial data:', error);
         setLeagues([]);
@@ -52,12 +52,12 @@ const LeagueOverview: React.FC = () => {
     const loadLeagueData = async () => {
       try {
         const [seasonsResponse, standingsResponse] = await Promise.all([
-          apiService.getSeasons(selectedLeague),
-          apiService.getStandings(selectedLeague)
+          apiService.getSeasons(parseInt(selectedLeague)),
+          apiService.getStandings(parseInt(selectedLeague))
         ]);
 
-        setSeasons(seasonsResponse.seasons);
-        setStandings(standingsResponse.standings);
+        setSeasons(seasonsResponse || []);
+        setStandings(standingsResponse || []);
       } catch (error) {
         console.error('Error loading league data:', error);
         setSeasons([]);
@@ -77,11 +77,11 @@ const LeagueOverview: React.FC = () => {
 
     const loadSeasonData = async () => {
       try {
-        const seasonData = seasons.find(s => s.id === selectedSeason);
+        const seasonData = seasons.find(s => s.id === parseInt(selectedSeason));
         if (!seasonData) return;
 
-        const roundsResponse = await apiService.getRounds(selectedLeague, seasonData.year);
-        setRounds(roundsResponse.rounds);
+        const roundsResponse = await apiService.getRounds(parseInt(selectedLeague), seasonData.year);
+        setRounds(roundsResponse || []);
       } catch (error) {
         console.error('Error loading season data:', error);
         setRounds([]);
@@ -95,10 +95,10 @@ const LeagueOverview: React.FC = () => {
   useEffect(() => {
     if (selectedLeague && seasons.length > 0) {
       const currentSeasons = seasons.filter(season => 
-        season.year === '2025'
+        season.year.toString() === '2025'
       );
       if (currentSeasons.length > 0 && !selectedSeason) {
-        setSelectedSeason(currentSeasons[0].id);
+        setSelectedSeason(currentSeasons[0].id.toString());
       }
     }
   }, [selectedLeague, seasons, selectedSeason]);
@@ -107,7 +107,7 @@ const LeagueOverview: React.FC = () => {
   useEffect(() => {
     if (selectedSeason && rounds.length > 0) {
       if (rounds.length > 0 && !selectedRound) {
-        setSelectedRound(rounds[0].id);
+        setSelectedRound(rounds[0].id.toString());
       }
     }
   }, [selectedSeason, rounds, selectedRound]);
@@ -121,17 +121,17 @@ const LeagueOverview: React.FC = () => {
   // Get matches from selected round (rounds now include matches from API)
   const roundMatches = React.useMemo(() => {
     if (!selectedRound) return [];
-    const round = rounds.find(r => r.id === selectedRound);
+    const round = rounds.find(r => r.id === parseInt(selectedRound));
     return round?.matches || [];
   }, [rounds, selectedRound]);
 
   // Get standings for selected league and season (now filtered by server)
   const currentStanding = React.useMemo(() => {
     if (!selectedLeague || !selectedSeason) return null;
-    return standings.find(standing => standing.seasonId === selectedSeason);
+    return standings.find(standing => standing.season === parseInt(selectedSeason));
   }, [standings, selectedSeason]);
 
-  const selectedLeagueData = leagues.find(league => league.id === selectedLeague);
+  const selectedLeagueData = leagues?.find(league => league.id === parseInt(selectedLeague));
 
   const handleMatchClick = (match: Match) => {
     navigate(`/match/${match.id}`);
@@ -177,12 +177,12 @@ const LeagueOverview: React.FC = () => {
             <button
               key={league.id}
               onClick={() => {
-                setSelectedLeague(league.id);
+                setSelectedLeague(league.id.toString());
                 setSelectedSeason('');
                 setSelectedRound('');
               }}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                selectedLeague === league.id
+                selectedLeague === league.id.toString()
                   ? 'bg-primary-600 text-white'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
@@ -271,7 +271,7 @@ const LeagueOverview: React.FC = () => {
           {leagues.map((league) => (
             <div
               key={league.id}
-              onClick={() => setSelectedLeague(league.id)}
+              onClick={() => setSelectedLeague(league.id.toString())}
               className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-md transition-all cursor-pointer"
             >
               <div className="flex items-center space-x-4">

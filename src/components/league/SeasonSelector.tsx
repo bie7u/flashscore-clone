@@ -20,7 +20,7 @@ const SeasonSelector: React.FC<SeasonSelectorProps> = ({
       >
         <option value="">All Seasons</option>
         {seasons.map((season) => (
-          <option key={season.id} value={season.id}>
+          <option key={season.id} value={season.id.toString()}>
             {season.name}
           </option>
         ))}
