@@ -37,11 +37,11 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, events }) => {
           <div className="flex flex-col items-center space-y-2 sm:flex-1">
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
               <span className="text-lg sm:text-xl font-bold text-gray-600 dark:text-gray-400">
-                {match.homeTeam.name.charAt(0)}
+                {match.home_team.name.charAt(0)}
               </span>
             </div>
             <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white text-center">
-              {match.homeTeam.name}
+              {match.home_team.name}
             </h3>
           </div>
 
@@ -49,11 +49,11 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, events }) => {
           <div className="flex flex-col items-center space-y-2 sm:px-8">
             <div className="flex items-center space-x-3 sm:space-x-4">
               <span className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                {match.homeTeam.score ?? '-'}
+                {match.home_score ?? '-'}
               </span>
               <span className="text-xl sm:text-2xl text-gray-400">:</span>
               <span className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                {match.awayTeam.score ?? '-'}
+                {match.away_score ?? '-'}
               </span>
             </div>
             {match.status === 'LIVE' && (
@@ -68,11 +68,11 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, events }) => {
           <div className="flex flex-col items-center space-y-2 sm:flex-1">
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
               <span className="text-lg sm:text-xl font-bold text-gray-600 dark:text-gray-400">
-                {match.awayTeam.name.charAt(0)}
+                {match.away_team.name.charAt(0)}
               </span>
             </div>
             <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white text-center">
-              {match.awayTeam.name}
+              {match.away_team.name}
             </h3>
           </div>
         </div>

@@ -21,66 +21,87 @@ class ApiService {
   }
 
   // Leagues
-  async getLeagues(league_name?: string): Promise<{ leagues: League[] }> {
+  async getLeagues(league_name?: string): Promise<League[]> {
     const params = league_name ? `?league_name=${league_name}` : '';
-    return this.fetchData<{ leagues: League[] }>(`/leagues${params}`);
+    return this.fetchData<League[]>(`/leagues/${params}`);
+  }
+
+  async getLeague(id: number): Promise<League> {
+    return this.fetchData<League>(`/leagues/${id}/`);
   }
 
   // Teams
-  async getTeams(leagueId?: string): Promise<{ teams: Team[] }> {
-    const params = leagueId ? `?leagueId=${leagueId}` : '';
-    return this.fetchData<{ teams: Team[] }>(`/teams${params}`);
+  async getTeams(): Promise<Team[]> {
+    return this.fetchData<Team[]>(`/teams/`);
+  }
+
+  async getTeam(id: number): Promise<Team> {
+    return this.fetchData<Team>(`/teams/${id}/`);
   }
 
   // Matches
   async getMatches(filters: {
-    leagueId?: string;
+    league_id?: number;
     status?: string;
     date?: string;
-    teamId?: string;
-  } = {}): Promise<{ matches: Match[] }> {
+    team_id?: number;
+  } = {}): Promise<Match[]> {
     const params = new URLSearchParams();
     
     Object.entries(filters).forEach(([key, value]) => {
-      if (value) params.append(key, value);
+      if (value !== undefined && value !== null) {
+        params.append(key, value.toString());
+      }
     });
     
     const queryString = params.toString();
-    return this.fetchData<{ matches: Match[] }>(`/matches${queryString ? '?' + queryString : ''}`);
+    return this.fetchData<Match[]>(`/matches/${queryString ? '?' + queryString : ''}`);
   }
 
-  async getMatch(matchId: string): Promise<Match> {
-    return this.fetchData<Match>(`/matches/${matchId}`);
+  async getMatch(matchId: number): Promise<Match> {
+    return this.fetchData<Match>(`/matches/${matchId}/`);
   }
 
-  async getMatchEvents(matchId: string): Promise<{ events: MatchEvent[] }> {
-    return this.fetchData<{ events: MatchEvent[] }>(`/matches/${matchId}/events`);
+  async getMatchEvents(matchId: number): Promise<{ events: MatchEvent[] }> {
+    return this.fetchData<{ events: MatchEvent[] }>(`/matches/${matchId}/events/`);
   }
 
   // Standings
-  async getStandings(leagueId?: string, season?: string): Promise<{ standings: Standing[] }> {
+  async getStandings(league?: number, season?: number): Promise<Standing[]> {
     const params = new URLSearchParams();
-    if (leagueId) params.append('leagueId', leagueId);
-    if (season) params.append('season', season);
+    if (league !== undefined) params.append('league', league.toString());
+    if (season !== undefined) params.append('season', season.toString());
     
     const queryString = params.toString();
-    return this.fetchData<{ standings: Standing[] }>(`/standings${queryString ? '?' + queryString : ''}`);
+    return this.fetchData<Standing[]>(`/standings/${queryString ? '?' + queryString : ''}`);
+  }
+
+  async getStanding(id: number): Promise<Standing> {
+    return this.fetchData<Standing>(`/standings/${id}/`);
   }
 
   // Rounds
-  async getRounds(leagueId?: string, season?: string): Promise<{ rounds: Round[] }> {
+  async getRounds(league?: number, season?: number): Promise<Round[]> {
     const params = new URLSearchParams();
-    if (leagueId) params.append('leagueId', leagueId);
-    if (season) params.append('season', season);
+    if (league !== undefined) params.append('league', league.toString());
+    if (season !== undefined) params.append('season', season.toString());
     
     const queryString = params.toString();
-    return this.fetchData<{ rounds: Round[] }>(`/rounds${queryString ? '?' + queryString : ''}`);
+    return this.fetchData<Round[]>(`/rounds/${queryString ? '?' + queryString : ''}`);
+  }
+
+  async getRound(id: number): Promise<Round> {
+    return this.fetchData<Round>(`/rounds/${id}/`);
   }
 
   // Seasons
-  async getSeasons(leagueId?: string): Promise<{ seasons: Season[] }> {
-    const params = leagueId ? `?leagueId=${leagueId}` : '';
-    return this.fetchData<{ seasons: Season[] }>(`/seasons${params}`);
+  async getSeasons(league?: number): Promise<Season[]> {
+    const params = league !== undefined ? `?league=${league}` : '';
+    return this.fetchData<Season[]>(`/seasons/${params}`);
+  }
+
+  async getSeason(id: number): Promise<Season> {
+    return this.fetchData<Season>(`/seasons/${id}/`);
   }
 
   // Health check
