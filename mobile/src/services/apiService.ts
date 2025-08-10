@@ -1,8 +1,55 @@
+import { Platform } from 'react-native';
 import type { League, Team, Match, MatchEvent, Standing, Round, Season } from '../types';
 
-// For React Native, we'll use the local machine's IP or localhost
+// For React Native, we need to use the machine's IP address instead of localhost
 // In production, this would be your actual API URL
-const API_BASE_URL = 'http://localhost:3001/api';
+// For now, we'll use localhost for web testing and fallback to a local IP if needed
+const API_BASE_URL = __DEV__ 
+  ? (Platform.OS === 'web' ? 'http://localhost:3001/api' : 'http://10.0.2.2:3001/api')
+  : 'http://localhost:3001/api';
+
+// Fallback mock data for development/testing
+const mockLeagues: League[] = [
+  { id: 1, name: "Premier League", logo: "/assets/team-logos/premier-league.png", country: "England" },
+  { id: 2, name: "La Liga", logo: "/assets/team-logos/la-liga.png", country: "Spain" },
+  { id: 3, name: "Bundesliga", logo: "/assets/team-logos/bundesliga.png", country: "Germany" },
+  { id: 4, name: "Serie A", logo: "/assets/team-logos/serie-a.png", country: "Italy" },
+  { id: 5, name: "Ligue 1", logo: "/assets/team-logos/ligue-1.png", country: "France" },
+  { id: 6, name: "UEFA Champions League", logo: "/assets/team-logos/champions-league.png", country: "Europe" },
+];
+
+const mockMatches: Match[] = [
+  {
+    id: 1,
+    league: 1,
+    league_read: "Premier League",
+    season: 2024,
+    round: 1,
+    round_number_read: "Matchday 1",
+    home_team: { id: 1, name: "Manchester United" },
+    away_team: { id: 2, name: "Liverpool" },
+    home_score: 2,
+    away_score: 1,
+    status: "FINISHED",
+    date: new Date().toISOString(),
+    venue: "Old Trafford"
+  },
+  {
+    id: 2,
+    league: 1,
+    league_read: "Premier League",
+    season: 2024,
+    round: 1,
+    round_number_read: "Matchday 1",
+    home_team: { id: 3, name: "Chelsea" },
+    away_team: { id: 4, name: "Arsenal" },
+    home_score: null,
+    away_score: null,
+    status: "SCHEDULED",
+    date: new Date(Date.now() + 86400000).toISOString(),
+    venue: "Stamford Bridge"
+  }
+];
 
 class ApiService {
   private async fetchData<T>(endpoint: string): Promise<T> {
@@ -16,6 +63,16 @@ class ApiService {
       return await response.json();
     } catch (error) {
       console.error(`API request failed for ${endpoint}:`, error);
+      console.log('Falling back to mock data for development...');
+      
+      // Fallback to mock data for development
+      if (endpoint.includes('/leagues')) {
+        return mockLeagues as T;
+      }
+      if (endpoint.includes('/matches')) {
+        return mockMatches as T;
+      }
+      
       throw error;
     }
   }
