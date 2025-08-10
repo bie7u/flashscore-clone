@@ -2,7 +2,7 @@ import type { League, Team, Match, MatchEvent, Standing, Round, Season } from '.
 
 const API_BASE_URL = import.meta.env.PROD 
   ? '/api' 
-  : 'http://localhost:3001/api';
+  : 'http://localhost:8000/api';
 
 class ApiService {
   private async fetchData<T>(endpoint: string): Promise<T> {
@@ -84,7 +84,7 @@ class ApiService {
   async getRounds(league?: number, season?: number): Promise<Round[]> {
     const params = new URLSearchParams();
     if (league !== undefined) params.append('league', league.toString());
-    if (season !== undefined) params.append('season', season.toString());
+    if (season !== undefined) params.append('season__year', season.toString());
     
     const queryString = params.toString();
     return this.fetchData<Round[]>(`/rounds/${queryString ? '?' + queryString : ''}`);

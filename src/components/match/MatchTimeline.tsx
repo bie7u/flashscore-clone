@@ -9,7 +9,7 @@ interface MatchTimelineProps {
 const MatchTimeline: React.FC<MatchTimelineProps> = ({ events }) => {
   const sortedEvents = sortEventsByMinute(events);
 
-  if (events.length === 0) {
+  if (events && events.length === 0) {
     return (
       <div className="text-center py-8">
         <p className="text-gray-600 dark:text-gray-400">No events yet</p>
@@ -24,7 +24,7 @@ const MatchTimeline: React.FC<MatchTimelineProps> = ({ events }) => {
       </h3>
       
       <div className="space-y-3">
-        {sortedEvents.map((event) => (
+        {sortedEvents && sortedEvents.map((event) => (
           <div
             key={event.id}
             className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"

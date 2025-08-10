@@ -115,5 +115,5 @@ export const getEventIcon = (eventType: string): string => {
 };
 
 export const sortEventsByMinute = (events: MatchEvent[]): MatchEvent[] => {
-  return events.sort((a, b) => a.minute - b.minute);
+  return events && events.sort((a, b) => a.minute - b.minute);
 };

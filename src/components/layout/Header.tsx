@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, Search } from 'lucide-react';
+import { Activity } from 'lucide-react';
+// import { Activity, Search } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
@@ -12,23 +13,23 @@ const Header: React.FC = () => {
           <Link to="/" className="flex items-center space-x-2">
             <Activity className="h-8 w-8 text-primary-600" />
             <span className="text-xl font-bold text-gray-900 dark:text-white">
-              FlashScore
+              BeskidScore
             </span>
           </Link>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-lg mx-8">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                placeholder="Search teams, leagues, matches..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
-            </div>
-          </div>
+          {/*<div className="flex-1 max-w-lg mx-8">*/}
+          {/*  <div className="relative">*/}
+          {/*    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">*/}
+          {/*      <Search className="h-5 w-5 text-gray-400" />*/}
+          {/*    </div>*/}
+          {/*    <input*/}
+          {/*      type="text"*/}
+          {/*      placeholder="Search teams, leagues, matches..."*/}
+          {/*      className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"*/}
+          {/*    />*/}
+          {/*  </div>*/}
+          {/*</div>*/}
 
           {/* Theme Toggle */}
           <ThemeToggle />
