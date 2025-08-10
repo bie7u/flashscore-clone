@@ -116,7 +116,7 @@ export interface MatchListProps {
 
 export interface LeagueSelectorProps {
   leagues: League[];
-  selectedLeague?: number;
+  selectedLeague?: number | null;
   onLeagueSelect: (leagueId: number | null) => void;
 }
 

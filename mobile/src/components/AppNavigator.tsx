@@ -76,6 +76,24 @@ export default function AppNavigator() {
           border: currentColors.border,
           notification: currentColors.primary,
         },
+        fonts: {
+          regular: {
+            fontFamily: 'System',
+            fontWeight: 'normal',
+          },
+          medium: {
+            fontFamily: 'System',
+            fontWeight: '500',
+          },
+          bold: {
+            fontFamily: 'System',
+            fontWeight: 'bold',
+          },
+          heavy: {
+            fontFamily: 'System',
+            fontWeight: '800',
+          },
+        },
       }}
     >
       <Stack.Navigator>
