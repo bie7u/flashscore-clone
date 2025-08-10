@@ -6,11 +6,53 @@ interface StandingsTableProps {
 }
 
 const StandingsTable: React.FC<StandingsTableProps> = ({ standing }) => {
-  const getPositionColor = (position: number) => {
-    if (position <= 4) return 'text-green-600 dark:text-green-400'; // Champions League
-    if (position <= 6) return 'text-blue-600 dark:text-blue-400'; // Europa League
-    if (position >= standing.table.length - 2) return 'text-red-600 dark:text-red-400'; // Relegation
-    return 'text-gray-700 dark:text-gray-300';
+  const getPositionType = (position: number) => {
+    const promotionNumber = standing.promotion_number || 0;
+    const playoffsNumber = standing.playoffs_number || 0;
+    const relegationNumber = standing.relegation_number || 0;
+    const totalTeams = standing.table.length;
+    
+    if (position <= promotionNumber) {
+      return 'promotion';
+    }
+    if (position <= promotionNumber + playoffsNumber) {
+      return 'playoffs';
+    }
+    if (position > totalTeams - relegationNumber) {
+      return 'relegation';
+    }
+    return 'normal';
+  };
+
+  const getRowClasses = (position: number) => {
+    const type = getPositionType(position);
+    const baseClasses = "hover:bg-opacity-90 dark:hover:bg-opacity-90";
+    
+    switch (type) {
+      case 'promotion':
+        return `bg-yellow-100 dark:bg-yellow-900/30 ${baseClasses}`;
+      case 'playoffs':
+        return `bg-green-100 dark:bg-green-900/30 ${baseClasses}`;
+      case 'relegation':
+        return `bg-red-100 dark:bg-red-900/30 ${baseClasses}`;
+      default:
+        return `hover:bg-gray-50 dark:hover:bg-gray-700 ${baseClasses}`;
+    }
+  };
+
+  const getPositionTextColor = (position: number) => {
+    const type = getPositionType(position);
+    
+    switch (type) {
+      case 'promotion':
+        return 'text-yellow-700 dark:text-yellow-400';
+      case 'playoffs':
+        return 'text-green-700 dark:text-green-400';
+      case 'relegation':
+        return 'text-red-700 dark:text-red-400';
+      default:
+        return 'text-gray-700 dark:text-gray-300';
+    }
   };
 
   return (
@@ -59,9 +101,9 @@ const StandingsTable: React.FC<StandingsTableProps> = ({ standing }) => {
           </thead>
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {standing.table.map((entry) => (
-              <tr key={entry.team} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <tr key={entry.team} className={getRowClasses(entry.position)}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`text-sm font-medium ${getPositionColor(entry.position)}`}>
+                  <span className={`text-sm font-medium ${getPositionTextColor(entry.position)}`}>
                     {entry.position}
                   </span>
                 </td>
@@ -114,18 +156,24 @@ const StandingsTable: React.FC<StandingsTableProps> = ({ standing }) => {
       {/* Legend */}
       <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
         <div className="flex flex-wrap gap-4 text-xs">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-green-500 rounded"></div>
-            <span className="text-gray-600 dark:text-gray-300">Champions League</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-blue-500 rounded"></div>
-            <span className="text-gray-600 dark:text-gray-300">Europa League</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-red-500 rounded"></div>
-            <span className="text-gray-600 dark:text-gray-300">Relegation</span>
-          </div>
+          {standing.promotion_number && standing.promotion_number > 0 && (
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-yellow-500 rounded"></div>
+              <span className="text-gray-600 dark:text-gray-300">Promotion</span>
+            </div>
+          )}
+          {standing.playoffs_number && standing.playoffs_number > 0 && (
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-500 rounded"></div>
+              <span className="text-gray-600 dark:text-gray-300">Playoffs</span>
+            </div>
+          )}
+          {standing.relegation_number && standing.relegation_number > 0 && (
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-red-500 rounded"></div>
+              <span className="text-gray-600 dark:text-gray-300">Relegation</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

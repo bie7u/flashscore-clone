@@ -184,6 +184,22 @@ app.get('/api/standings/', (req, res) => {
   res.json(result);
 });
 
+app.get('/api/standings/league=:id', (req, res) => {
+  const { id } = req.params;
+  
+  if (!standings) {
+    return res.status(500).json({ error: 'Failed to load standings data' });
+  }
+  
+  const result = standings.standings.filter(standing => standing.league === parseInt(id));
+  
+  if (result.length === 0) {
+    return res.status(404).json({ error: 'No standings found for this league' });
+  }
+  
+  res.json(result);
+});
+
 app.get('/api/standings/:id/', (req, res) => {
   const { id } = req.params;
   
