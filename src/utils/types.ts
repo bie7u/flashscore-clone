@@ -45,6 +45,9 @@ export interface Standing {
   league: number;
   league_read: string;
   season: number;
+  promotion_number?: number;
+  playoffs_number?: number;
+  relegation_number?: number;
   table: StandingEntry[];
 }
 
