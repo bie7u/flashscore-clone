@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Activity } from 'lucide-react';
+// import { Activity } from 'lucide-react';
 // import { Activity, Search } from 'lucide-react';
+import beskid_logo from '../../assets/beskid_logo.png';
 import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
@@ -11,7 +12,8 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <Activity className="h-8 w-8 text-primary-600" />
+            <img src={beskid_logo} alt="Logo" className="h-12 w-12" />
+            {/*<Activity className="h-8 w-8 text-primary-600" />*/}
             <span className="text-xl font-bold text-gray-900 dark:text-white">
               BeskidScore
             </span>
