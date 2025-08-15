@@ -1,6 +1,41 @@
 // Match utility functions
 import type { Match, MatchStatus, MatchEvent } from './types';
 
+/**
+ * Calculate the current minute of a live match based on the match start time
+ * Handles football match structure: 45min first half + 15min break + 45min second half
+ */
+export const calculateMatchMinute = (matchDate: string): string => {
+  const matchStart = new Date(matchDate);
+  const now = new Date();
+  const elapsedMs = now.getTime() - matchStart.getTime();
+  const elapsedMinutes = Math.floor(elapsedMs / (1000 * 60));
+
+  // If match hasn't started yet or negative time
+  if (elapsedMinutes < 0) {
+    return 'LIVE';
+  }
+
+  // First half (0-45 minutes)
+  if (elapsedMinutes <= 45) {
+    return elapsedMinutes === 0 ? '1\'' : `${elapsedMinutes}'`;
+  }
+
+  // Break time (46-60 minutes)
+  if (elapsedMinutes < 60) {
+    return 'Break';
+  }
+
+  // Second half (60-105 minutes = 46'-90')
+  if (elapsedMinutes <= 105) {
+    const secondHalfMinute = elapsedMinutes - 15; // Subtract 15 minute break
+    return `${secondHalfMinute}'`;
+  }
+
+  // Match finished (105+ minutes)
+  return 'Finished';
+};
+
 export const getMatchStatusColor = (status: MatchStatus): string => {
   switch (status) {
     case 'LIVE':
@@ -21,7 +56,7 @@ export const getMatchStatusColor = (status: MatchStatus): string => {
 export const getMatchStatusText = (match: Match): string => {
   switch (match.status) {
     case 'LIVE':
-      return match.minute ? `${match.minute}'` : 'LIVE';
+      return calculateMatchMinute(match.date);
     case 'FINISHED':
       return 'FT';
     case 'SCHEDULED':
