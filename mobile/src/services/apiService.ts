@@ -1,8 +1,8 @@
-import type { League, Team, Match, MatchEvent, Standing, Round, Season } from './types';
+import type { League, Team, Match, MatchEvent, Standing, Round, Season } from '../types';
 
-const API_BASE_URL = import.meta.env.PROD 
-  ? '/api' 
-  : 'http://localhost:3001/api';
+// For React Native, we'll use the local machine's IP or localhost
+// In production, this would be your actual API URL
+const API_BASE_URL = 'http://localhost:3001/api';
 
 class ApiService {
   private async fetchData<T>(endpoint: string): Promise<T> {
