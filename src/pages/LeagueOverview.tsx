@@ -146,7 +146,7 @@ const LeagueOverview: React.FC = () => {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          {selectedLeagueData ? selectedLeagueData.name : 'Leagues'}
+          {selectedLeagueData ? selectedLeagueData.name : 'Ligi'}
         </h1>
         {selectedLeagueData && (
           <p className="text-gray-600 dark:text-gray-400">
@@ -170,7 +170,7 @@ const LeagueOverview: React.FC = () => {
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >
-            All Leagues
+            Wszystkie ligi
           </button>
           
           {leagues.map((league) => (
@@ -224,7 +224,7 @@ const LeagueOverview: React.FC = () => {
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
                 }`}
               >
-                Fixtures & Results
+                Terminarz i wyniki
               </button>
               <button
                 onClick={() => setActiveTab('standings')}
@@ -234,7 +234,7 @@ const LeagueOverview: React.FC = () => {
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
                 }`}
               >
-                Table
+                Tabela
               </button>
             </nav>
           </div>

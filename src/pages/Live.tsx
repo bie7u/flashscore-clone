@@ -77,11 +77,11 @@ const Live: React.FC = () => {
         <div className="flex items-center space-x-3 mb-2">
           <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Live Matches
+            Mecze na żywo
           </h1>
         </div>
         <p className="text-gray-600 dark:text-gray-400">
-          Follow live matches happening right now
+          Śledź mecze odbywające się w tej chwili
         </p>
       </div>
 
@@ -99,7 +99,7 @@ const Live: React.FC = () => {
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
           <span className="text-red-800 dark:text-red-200 font-medium">
-            {liveMatches.length} live match{liveMatches.length !== 1 ? 'es' : ''} right now
+            {liveMatches.length} mecz{liveMatches.length === 1 ? '' : 'y'} na żywo
           </span>
         </div>
       </div>
@@ -111,10 +111,10 @@ const Live: React.FC = () => {
         <div className="text-center py-12">
           <div className="text-gray-400 dark:text-gray-500 text-6xl mb-4">📺</div>
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-            No live matches
+            Brak meczów na żywo
           </h3>
           <p className="text-gray-600 dark:text-gray-400">
-            {selectedLeague ? 'No live matches in the selected league' : 'No matches are currently being played'}
+            {selectedLeague ? 'Brak meczów na żywo w wybranej lidze' : 'Obecnie nie odbywają się żadne mecze'}
           </p>
         </div>
       )}

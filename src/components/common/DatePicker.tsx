@@ -47,7 +47,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChange }) =
         onClick={handleToday}
         className="px-3 py-1 text-xs font-medium text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded transition-colors"
       >
-        Today
+        Dzisiaj
       </button>
     </div>
   );

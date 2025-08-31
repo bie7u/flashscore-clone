@@ -23,7 +23,7 @@ export const calculateMatchMinute = (matchDate: string): string => {
 
   // Break time (46-60 minutes)
   if (elapsedMinutes < 60) {
-    return 'Break';
+    return 'Przerwa';
   }
 
   // Second half (60-105 minutes = 46'-90')
@@ -33,7 +33,7 @@ export const calculateMatchMinute = (matchDate: string): string => {
   }
 
   // Match finished (105+ minutes)
-  return 'Finished';
+  return 'Zakończony';
 };
 
 export const getMatchStatusColor = (status: MatchStatus): string => {
@@ -58,17 +58,17 @@ export const getMatchStatusText = (match: Match): string => {
     case 'LIVE':
       return calculateMatchMinute(match.date);
     case 'FINISHED':
-      return 'FT';
+      return 'Koniec';
     case 'SCHEDULED':
-      return new Date(match.date).toLocaleTimeString('en-US', {
+      return new Date(match.date).toLocaleTimeString('pl-PL', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false
       });
     case 'POSTPONED':
-      return 'POSTPONED';
+      return 'PRZEŁOŻONY';
     case 'CANCELLED':
-      return 'CANCELLED';
+      return 'ODWOŁANY';
     default:
       return '';
   }

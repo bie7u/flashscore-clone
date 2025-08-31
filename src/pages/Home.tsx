@@ -63,10 +63,10 @@ const Home: React.FC = () => {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Live Scores & Fixtures
+          Wyniki na żywo i terminarz
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Follow your favorite teams and leagues
+          Śledź swoje ulubione drużyny i ligi
         </p>
       </div>
 
@@ -94,8 +94,8 @@ const Home: React.FC = () => {
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
             <span className="text-green-800 dark:text-green-200 font-medium">
-              {matches.filter(match => match.status === 'LIVE').length} live match
-              {matches.filter(match => match.status === 'LIVE').length !== 1 ? 'es' : ''} right now!
+              {matches.filter(match => match.status === 'LIVE').length} mecz
+              {matches.filter(match => match.status === 'LIVE').length === 1 ? '' : 'y'} na żywo!
             </span>
           </div>
         </div>
