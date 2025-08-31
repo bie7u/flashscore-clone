@@ -17,7 +17,7 @@ const MatchDetailsPage: React.FC = () => {
 
   useEffect(() => {
     if (!matchId) {
-      setError('Match ID not provided');
+      setError('Nie podano identyfikatora meczu');
       setLoading(false);
       return;
     }
@@ -37,7 +37,7 @@ const MatchDetailsPage: React.FC = () => {
         setEvents(eventsData.events);
       } catch (error) {
         console.error('Error loading match data:', error);
-        setError('Failed to load match data. Please try again.');
+        setError('Nie udało się załadować danych meczu. Spróbuj ponownie.');
       } finally {
         setLoading(false);
       }
@@ -57,7 +57,7 @@ const MatchDetailsPage: React.FC = () => {
   if (error || !match) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <ErrorMessage message={error || 'Match not found'} onRetry={handleBack} />
+        <ErrorMessage message={error || 'Nie znaleziono meczu'} onRetry={handleBack} />
       </div>
     );
   }
@@ -70,7 +70,7 @@ const MatchDetailsPage: React.FC = () => {
         className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4 sm:mb-6 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
-        <span className="text-sm sm:text-base">Back to matches</span>
+        <span className="text-sm sm:text-base">Powrót do meczów</span>
       </button>
 
       {/* Match Details */}

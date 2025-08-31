@@ -18,7 +18,7 @@ const MatchList: React.FC<MatchListProps> = ({ matches, onMatchClick }) => {
     return (
       <div className="text-center py-12">
         <div className="text-gray-400 dark:text-gray-500 text-lg mb-2">⚽</div>
-        <p className="text-gray-600 dark:text-gray-400">No matches found</p>
+        <p className="text-gray-600 dark:text-gray-400">Nie znaleziono meczów</p>
       </div>
     );
   }
@@ -34,7 +34,7 @@ const MatchList: React.FC<MatchListProps> = ({ matches, onMatchClick }) => {
             </h3>
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              {dateMatches.length} match{dateMatches.length !== 1 ? 'es' : ''}
+              {dateMatches.length} mecz{dateMatches.length === 1 ? '' : 'y'}
             </span>
           </div>
 

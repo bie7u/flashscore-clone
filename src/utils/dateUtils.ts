@@ -2,7 +2,7 @@
 
 export const formatDate = (date: string | Date): string => {
   const d = new Date(date);
-  return d.toLocaleDateString('en-US', {
+  return d.toLocaleDateString('pl-PL', {
     month: 'short',
     day: 'numeric',
     year: 'numeric'
@@ -11,7 +11,7 @@ export const formatDate = (date: string | Date): string => {
 
 export const formatTime = (date: string | Date): string => {
   const d = new Date(date);
-  return d.toLocaleTimeString('en-US', {
+  return d.toLocaleTimeString('pl-PL', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false
@@ -20,7 +20,7 @@ export const formatTime = (date: string | Date): string => {
 
 export const formatDateTime = (date: string | Date): string => {
   const d = new Date(date);
-  return d.toLocaleString('en-US', {
+  return d.toLocaleString('pl-PL', {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
@@ -50,15 +50,15 @@ export const isTomorrow = (date: string | Date): boolean => {
 };
 
 export const getRelativeDate = (date: string | Date): string => {
-  if (isToday(date)) return 'Today';
-  if (isYesterday(date)) return 'Yesterday';
-  if (isTomorrow(date)) return 'Tomorrow';
+  if (isToday(date)) return 'Dzisiaj';
+  if (isYesterday(date)) return 'Wczoraj';
+  if (isTomorrow(date)) return 'Jutro';
   return formatDate(date);
 };
 
 export const getDayOfWeek = (date: string | Date): string => {
   const d = new Date(date);
-  return d.toLocaleDateString('en-US', { weekday: 'short' });
+  return d.toLocaleDateString('pl-PL', { weekday: 'short' });
 };
 
 export const addDays = (date: Date, days: number): Date => {

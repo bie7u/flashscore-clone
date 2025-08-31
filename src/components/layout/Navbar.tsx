@@ -4,9 +4,9 @@ import { Home, Trophy, Radio } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const navItems = [
-    { to: '/', icon: Home, label: 'Home' },
-    { to: '/live', icon: Radio, label: 'Live' },
-    { to: '/leagues', icon: Trophy, label: 'Leagues' },
+    { to: '/', icon: Home, label: 'Strona główna' },
+    { to: '/live', icon: Radio, label: 'Na żywo' },
+    { to: '/leagues', icon: Trophy, label: 'Ligi' },
   ];
 
   return (
