@@ -1,8 +1,10 @@
 import type { League, Team, Match, MatchEvent, Standing, Round, Season } from './types';
 
-const API_BASE_URL = import.meta.env.PROD 
-  ? '/api' 
-  : 'http://localhost:8000/api';
+// const API_BASE_URL = import.meta.env.PROD 
+//   ? '/api' 
+//   : 'http://localhost:8000/api';
+
+const API_BASE_URL = 'http://100.64.0.1:8000/api';
 
 class ApiService {
   private async fetchData<T>(endpoint: string): Promise<T> {
